@@ -1,5 +1,5 @@
 ---
-title: "Sykdomspulsen Core Documentation"
+title: "Sykdomspulsen Core In Depth"
 site: bookdown::bookdown_site
 documentclass: book
 output:
