@@ -1,0 +1,26 @@
+---
+title: "Sykdomspulsen Core Documentation"
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook:
+    config:
+      edit: https://github.com/sykdomspulsen-org/sc_learning/edit/main/%s
+      download: ["pdf"]
+  bookdown::pdf_book: default
+github-repo: sykdomspulsen-org/sc_learning
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+options(knitr.kable.NA = '')
+library(data.table)
+library(magrittr)
+if(!requireNamespace("sykdomspulsen")){
+  devtools::load_all(".")
+} else {
+  library(sykdomspulsen)
+}
+```
+
+# Overview
