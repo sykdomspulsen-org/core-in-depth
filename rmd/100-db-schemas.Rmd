@@ -1,0 +1,394 @@
+# DB Schemas
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, warning=FALSE)
+options(knitr.kable.NA = '')
+
+unloadNamespace("sc")
+library(data.table)
+library(magrittr)
+library(sc)
+```
+
+## Introduction
+
+A database schema is our way of representing how the database is constructed. In short, you can think of these as database tables.
+
+## Database servers
+
+Normally, an implementation of Sykdomspulsen Core would have two database servers that run parallel systems. One database server is `auto` and the other is `interactive`.
+
+If you run code in RStudio Workbench or on Airflow interactive, you should be automatically be connected to the interactive database server. If you run code on Airflow auto, you should be automatically be connected to the auto database server. This is something that your implementation will have to solve.
+
+## Access level (anon/restr/redirect)
+
+Within each database server, there are multiple databases with different access levels and censoring requirements.
+
+Censoring is performed via the db schema.
+
+### anon
+
+The "anonymous" database contains data that is anonymous. All team members should have access to this database.
+
+### restr
+
+The "restricted" database contains data that is:
+
+- Indirectly identifiable
+- Anonymous
+
+Only a restricted number of team members should have access to this database.
+
+### redirect
+
+This is not technically a database, however, it is treated as one.
+
+If a person creates a db schema that exists in both the anonymous and restricted databases, then Sykdomspulsen Core will automatically detect the highest level of access and connect to that database when working with redirect schemas.
+
+```{r, out.width = "100%", echo = FALSE}
+knitr::include_graphics("rmd/db-schemas/db_redirect.png")
+```
+
+## Creating your own
+
+Sykdomspulsen Core requires a lot of boilerplate code. It is strongly recommended that you use the RStudio `Addins` menu to help you quickly insert code templates.
+
+```{r, out.width = "100%", echo = FALSE}
+knitr::include_graphics("rmd/db-schemas/addins.png")
+```
+
+We will generate three database schemas:
+
+- restr_example (specified via `name_access`)
+- anon_example (specified via `name_access`)
+- redirect_example (automatically created when both `restr` and `anon` are used)
+
+```{r, echo=T, eval=T}
+sc::add_schema_v8(
+  name_access = c("restr", "anon"),
+  name_grouping = "example",
+  name_variant = NULL,
+  db_configs = sc::config$db_configs,
+  field_types =  c(
+    "granularity_time" = "TEXT",
+    "granularity_geo" = "TEXT",
+    "country_iso3" = "TEXT",
+    "location_code" = "TEXT",
+    "border" = "INTEGER",
+    "age" = "TEXT",
+    "sex" = "TEXT",
+    
+    "date" = "DATE",
+    
+    "isoyear" = "INTEGER",
+    "isoweek" = "INTEGER",
+    "isoyearweek" = "TEXT",
+    "season" = "TEXT",
+    "seasonweek" = "DOUBLE",
+    
+    "calyear" = "INTEGER",
+    "calmonth" = "INTEGER",
+    "calyearmonth" = "TEXT",
+
+    "value_n" = "INTEGER"
+  ),
+  keys = c(
+    "granularity_time",
+    "location_code",
+    "date",
+    "age",
+    "sex"
+  ),
+  censors = list(
+    restr = list(
+      value_n = sc::censor_function_factory_nothing("value_n")
+    ),
+    anon = list(
+      value_n = sc::censor_function_factory_values_0_4("value_n")
+    )
+  ),
+  validator_field_types = sc::validator_field_types_sykdomspulsen,
+  validator_field_contents = sc::validator_field_contents_sykdomspulsen,
+  info = "This db table is used for..."
+)
+```
+
+This `schema` has a few main parts.
+
+### Naming
+
+The db schemas and tables will be given the names: `name_access_name_grouping_name_variant`
+
+In this example, there will be three db schemas:
+
+- restr_example (accessible at `sc::config$schemas$restr_example`)
+- anon_example (accessible at `sc::config$schemas$anon_example`)
+- redirect_example (accessible at `sc::config$schemas$redirect_example`)
+
+Corresponding to two db tables:
+
+- restr_example
+- anon_example
+
+#### name_access
+
+Either `restr` or `anon`
+
+#### name_grouping
+
+A descriptive name 
+
+#### name_variant
+
+A descriptive name
+
+### db_configs
+
+A list that contains information about the database:
+
+```{r, echo=T}
+names(sc::config$db_configs)
+```
+
+### db_field_types
+
+A vector containing the names and variable types of the columns of the database table.
+
+In the vast majority of cases, the first 16 columns are standardized and will always be the same.
+
+Permitted variable types are:
+
+- TEXT
+- DOUBLE
+- INTEGER
+- BOOLEAN
+- DATE
+- DATETIME
+
+### keys
+
+The columns that will form the primary key of the database table (i.e. identify unique rows).
+
+### censors
+
+
+### validator_field_types
+
+A validator that is useful for ensuring that your database table names are consistent with predetermined rules. For example, in Sykdomspulsen we have decided that we always want the first 16 columns to be:
+
+- granularity_time
+- granularity_geo
+- country_iso3
+- location_code
+- border
+- age
+- sex
+- date
+- isoyear
+- isoweek
+- isoyearweek
+- season
+- seasonweek
+- calyear
+- calmonth
+- calyearmonth
+
+While developing new code we found that it was difficult to force all developers to remember to include these 16 columns in the correct order. The validator `sc::validator_field_types_sykdomspulsen` ensures that the first 16 columns are as expected, and otherwise the developer will not be able to run their code.
+
+`validator_field_contents` is a validator that ensures that the contents of your data is correct. We experienced that there were issues with `granularity_time` sometimes containing the value `week` and sometimes containing the value `weekly`. To maintain consistency in our data, the validator `sc::validator_field_contents_sykdomspulsen` will throw an error if it observes non-accepted values for certain variables.
+
+## Loading data into a db schema
+
+Checklist:
+
+1. Remember that "keys" (as defined in sc::add_schema_v8) defines the uniquely identifying rows of data that are allowed in the db table
+2. Use `sc::fill_in_missing_v8(d)`
+3. Choose your method of loading the data (upsert/insert/drop_all_rows_and_then_upsert_data)
+
+```{r, echo = F}
+sc::drop_table("restr_example")
+sc::drop_table("anon_example")
+```
+
+We check to see what schemas are available:
+
+```{r, echo = T}
+stringr::str_subset(names(sc::config$schemas), "_example$")
+```
+
+We then create a fictional dataset and work with it.
+
+<aside>
+Remember that "keys" (as defined in `sc::add_schema_v8`) defines the uniquely identifying rows of data that are allowed in the db table!
+</aside>
+
+```{r, echo=T, eval=T}
+options(width = 150)
+# fictional dataset
+d <- data.table(
+  granularity_time = "day",
+  granularity_geo = "nation",
+  country_iso3 = "nor",
+  location_code = "norge",
+  border = 2020,
+  age = "total",
+  sex = "total",
+  
+  date = c(as.Date("1990-01-07"),as.Date("1990-01-08")),
+  
+  isoyear = 1990,
+  isoweek = 1,
+  isoyearweek = "1990-01",
+  season = "1990/1991",
+  seasonweek = 24,
+  
+  calyear = NA,
+  calmonth = NA,
+  calyearmonth = NA,
+  
+  value_n = c(3,6)
+)
+
+# display the raw data
+d[]
+
+# always fill in missing data!
+sc::fill_in_missing_v8(d)
+
+# we have four options to get the data into the db table
+# remember that "keys" defines the uniquely identifying rows of data that are allowed in the db table!
+# - upsert means "update if data exists, otherwise append"
+# - insert means "append" (data cannot already exist)
+
+sc::config$schemas$redirect_example$upsert_data(d)
+#sc::config$schemas$redirect_example$insert_data(d)
+#sc::config$schemas$redirect_example$drop_all_rows_and_then_upsert_data(d)
+#sc::config$schemas$redirect_example$drop_all_rows_and_then_insert_data(d)
+```
+
+## Accessing the data in a db schema
+
+Checklist:
+
+1. `sc::mandatory_db_filter`
+2. `dplyr::select`
+
+We extract data from db schemas using [dplyr](https://dplyr.tidyverse.org/) with a [dbplyr backend](https://dbplyr.tidyverse.org/).
+
+```{r, echo=T, eval=T}
+options(width = 150)
+sc::config$schemas$redirect_example$tbl() %>%
+  sc::mandatory_db_filter(
+    granularity_time = "day",
+    granularity_time_not = NULL,
+    granularity_geo = NULL,
+    granularity_geo_not = NULL,
+    country_iso3 = NULL,
+    location_code = "norge",
+    age = "total",
+    age_not = NULL,
+    sex = "total",
+    sex_not = NULL
+  ) %>%
+  dplyr::select(
+    granularity_time,
+    location_code,
+    date,
+    value_n,
+    value_n_censored
+  ) %>%
+  dplyr::collect() %>%
+  as.data.table() %>%
+  print()
+```
+
+We can observe the effects of censoring as defined in `sc::add_schema_v8`
+
+```{r, echo=T, eval=T}
+options(width = 150)
+sc::config$schemas$restr_example$tbl() %>%
+  sc::mandatory_db_filter(
+    granularity_time = "day",
+    granularity_time_not = NULL,
+    granularity_geo = NULL,
+    granularity_geo_not = NULL,
+    country_iso3 = NULL,
+    location_code = "norge",
+    age = "total",
+    age_not = NULL,
+    sex = "total",
+    sex_not = NULL
+  ) %>%
+  dplyr::select(
+    granularity_time,
+    location_code,
+    date,
+    value_n,
+    value_n_censored
+  ) %>%
+  dplyr::collect() %>%
+  as.data.table() %>%
+  print()
+
+sc::config$schemas$anon_example$tbl() %>%
+  sc::mandatory_db_filter(
+    granularity_time = "day",
+    granularity_time_not = NULL,
+    granularity_geo = NULL,
+    granularity_geo_not = NULL,
+    country_iso3 = NULL,
+    location_code = "norge",
+    age = "total",
+    age_not = NULL,
+    sex = "total",
+    sex_not = NULL
+  ) %>%
+  dplyr::select(
+    granularity_time,
+    location_code,
+    date,
+    value_n,
+    value_n_censored
+  ) %>%
+  dplyr::collect() %>%
+  as.data.table() %>%
+  print()
+```
+
+## Accessing the data in ad-hoc analyses
+
+When doing ad-hoc analyses, you may access the database tables via the helper function `sc::tbl`
+
+**IT IS STRICTLY FORBIDDEN TO USE THIS INSIDE SYKDOMSPULSEN TASKS!!!**
+
+This is because `sc::tbl`:
+
+- is NOT SAFE to use in parallel programming
+- bypasses the input/output control mechanisms that we apply in `sc::task_from_config_v8`
+
+```{r, echo = T}
+options(width = 150)
+sc::tbl("restr_example") %>%
+  sc::mandatory_db_filter(
+    granularity_time = "day",
+    granularity_time_not = NULL,
+    granularity_geo = NULL,
+    granularity_geo_not = NULL,
+    country_iso3 = NULL,
+    location_code = "norge",
+    age = "total",
+    age_not = NULL,
+    sex = "total",
+    sex_not = NULL
+  ) %>%
+  dplyr::select(
+    granularity_time,
+    location_code,
+    date,
+    value_n,
+    value_n_censored
+  ) %>%
+  dplyr::collect() %>% 
+  as.data.table() %>% 
+  print()
+```

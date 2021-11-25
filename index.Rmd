@@ -1,18 +1,21 @@
 ---
-title: "Sykdomspulsen Core Documentation"
+title: "Sykdomspulsen Core in Depth"
 site: bookdown::bookdown_site
 documentclass: book
 output:
-  bookdown::gitbook:
+  bookdown::bs4_book:
+    theme:
+      primary: "#393c61"
+      font_scale: 0.75
     config:
-      edit: https://github.com/sykdomspulsen-org/sc_learning/edit/main/%s
+      edit: https://github.com/sykdomspulsen-org/core-in-depth/edit/main/%s
       download: ["pdf"]
   bookdown::pdf_book: default
-github-repo: sykdomspulsen-org/sc_learning
+github-repo: sykdomspulsen-org/core-in-depth
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(collapse = TRUE, warning=FALSE)
 options(knitr.kable.NA = '')
 library(data.table)
 library(magrittr)
@@ -23,4 +26,8 @@ if(!requireNamespace("sykdomspulsen")){
 }
 ```
 
-# Overview
+# Sykdomspulsen Core in Depth
+
+Sykdomspulsen Core is the free and open-source backbone of [Sykdomspulsen](https://docs.sykdomspulsen.no).
+
+Sykdomspulsen Core is a standalone R package, which means it is easy for other teams to build up their own surveillance infrastructure based on Sykdomspulsen Core.
