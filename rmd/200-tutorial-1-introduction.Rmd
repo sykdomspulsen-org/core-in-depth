@@ -419,6 +419,7 @@ This code is only run if it is the first analysis. It is typically used to drop 
 #### Doing things
 
 In this tutorial we do not go in to much detail about how the data is collected so for now copy the content of the action function from the task already implemented.
+<<<<<<< HEAD
 # ```{r, echo=TRUE, eval = FALSE}
 #     a <- data$data
 # 
@@ -477,6 +478,66 @@ In this tutorial we do not go in to much detail about how the data is collected 
 #     schema$anon_example_weather_rawdata$insert_data(res)
 # ```
 #    
+=======
+```{r, echo=TRUE, eval = FALSE}
+    a <- data$data
+
+    baz <- xml2::xml_find_all(a, ".//maxTemperature")
+    res <- vector("list", length = length(baz))
+    for (i in seq_along(baz)) {
+      parent <- xml2::xml_parent(baz[[i]])
+      grandparent <- xml2::xml_parent(parent)
+      time_from <- xml2::xml_attr(grandparent, "from")
+      time_to <- xml2::xml_attr(grandparent, "to")
+      x <- xml2::xml_find_all(parent, ".//minTemperature")
+      temp_min <- xml2::xml_attr(x, "value")
+      x <- xml2::xml_find_all(parent, ".//maxTemperature")
+      temp_max <- xml2::xml_attr(x, "value")
+      x <- xml2::xml_find_all(parent, ".//precipitation")
+      precip <- xml2::xml_attr(x, "value")
+      res[[i]] <- data.frame(
+        time_from = as.character(time_from),
+        time_to = as.character(time_to),
+        temp_max = as.numeric(temp_max),
+        temp_min = as.numeric(temp_min),
+        precip = as.numeric(precip)
+      )
+    }
+    res <- rbindlist(res)
+    res <- res[stringr::str_sub(time_from, 12, 13) %in% c("00", "06", "12", "18")]
+    res[, date := as.Date(stringr::str_sub(time_from, 1, 10))]
+    res[, N := .N, by = date]
+    res <- res[N == 4]
+    res <- res[
+      ,
+      .(
+        temp_max = max(temp_max),
+        temp_min = min(temp_min),
+        precip = sum(precip)
+      ),
+      keyby = .(date)
+    ]
+
+    # we look at the downloaded data
+     res
+
+    # we now need to format it
+    res[, granularity_time := "day"]
+    res[, sex := "total"]
+    res[, age := "total"]
+    res[, location_code := argset$location_code]
+
+    # fill in missing structural variables
+    sc::fill_in_missing_v8(res, border = 2020)
+
+    # we look at the downloaded data
+     res
+
+    # put data in db table
+    schema$anon_example_weather_rawdata$insert_data(res)
+```
+   
+>>>>>>> b33f955d29dc134b06fae42bdf3afdbf46e8a4d0
    
     
 ```{r, echo=FALSE}
