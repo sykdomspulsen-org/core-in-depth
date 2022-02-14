@@ -1,5 +1,6 @@
 ---
 title: "Sykdomspulsen Core in Depth"
+author: "Richard, Aurora"
 site: bookdown::bookdown_site
 documentclass: book
 output:
@@ -26,7 +27,7 @@ if(!requireNamespace("sykdomspulsen")){
 }
 ```
 
-# Sykdomspulsen Core in Depth
+# Sykdomspulsen Core in Depth {.unnumbered}
 
 Sykdomspulsen Core is the free and open-source backbone of [Sykdomspulsen](https://docs.sykdomspulsen.no).
 
