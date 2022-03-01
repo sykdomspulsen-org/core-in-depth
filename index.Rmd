@@ -1,6 +1,6 @@
 ---
 title: "Sykdomspulsen Core in Depth"
-author: "Richard, Aurora"
+author: "members of the Sykdomspulsen Team"
 site: bookdown::bookdown_site
 documentclass: book
 output:

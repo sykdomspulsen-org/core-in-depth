@@ -392,3 +392,27 @@ sc::tbl("restr_example") %>%
   as.data.table() %>% 
   print()
 ```
+
+## Exploring data in schemas
+
+DB Schemas obviously contain a lot of data. It can be very overwhelming to try and understand what is inside the schema.
+
+```{r, out.width = "100%", echo = T}
+options(width = 150)
+
+# Get the first few lines of the schema (use $tbl())
+sc::config$schemas$restr_example$tbl()
+
+# Get a summary of the schema (referencing the schema directly)
+sc::config$schemas$restr_example
+
+# Get a summary of a variable inside the schema via 'hashing the data structure'
+sc::config$schemas$restr_example %>%
+  spltidy::hash_data_structure("value_n") %>%
+  plot()
+# This can also be done directly on a dbplyr table
+sc::tbl("restr_example") %>%
+  spltidy::hash_data_structure("value_n") %>%
+  plot()
+```
+
