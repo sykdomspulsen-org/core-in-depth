@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>1 DB Schemas | Sykdomspulsen Core in Depth</title>
+<meta name="author" content="members of the Sykdomspulsen Team">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="1 DB Schemas | Sykdomspulsen Core in Depth">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1 DB Schemas | Sykdomspulsen Core in Depth">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="1.1 Introduction A database schema is our way of representing how the database is constructed. In short, you can think of these as database tables.  1.2 Database servers Normally, an...">
+<meta property="og:description" content="1.1 Introduction A database schema is our way of representing how the database is constructed. In short, you can think of these as database tables.  1.2 Database servers Normally, an...">
+<meta name="twitter:description" content="1.1 Introduction A database schema is our way of representing how the database is constructed. In short, you can think of these as database tables.  1.2 Database servers Normally, an...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="https://docs.sykdomspulsen.no" title="">docs.sykdomspulsen.no</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Sykdomspulsen Core in Depth</a></li>
+<li><a class="" href="authors.html">Authors</a></li>
+<li><a class="active" href="db-schemas.html"><span class="header-section-number">1</span> DB Schemas</a></li>
+<li><a class="" href="tasks.html"><span class="header-section-number">2</span> Tasks</a></li>
+<li><a class="" href="file-layout.html"><span class="header-section-number">3</span> File Layout</a></li>
+<li><a class="" href="tutorial-1-introduction.html"><span class="header-section-number">4</span> Tutorial 1: Introduction</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="db-schemas" class="section level1" number="1">
+<h1>
+<span class="header-section-number">1</span> DB Schemas<a class="anchor" aria-label="anchor" href="#db-schemas"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction" class="section level2" number="1.1">
+<h2>
+<span class="header-section-number">1.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
+</h2>
+<p>A database schema is our way of representing how the database is constructed. In short, you can think of these as database tables.</p>
+</div>
+<div id="database-servers" class="section level2" number="1.2">
+<h2>
+<span class="header-section-number">1.2</span> Database servers<a class="anchor" aria-label="anchor" href="#database-servers"><i class="fas fa-link"></i></a>
+</h2>
+<p>Normally, an implementation of Sykdomspulsen Core would have two database servers that run parallel systems. One database server is <code>auto</code> and the other is <code>interactive</code>.</p>
+<p>If you run code in RStudio Workbench or on Airflow interactive, you should be automatically be connected to the interactive database server. If you run code on Airflow auto, you should be automatically be connected to the auto database server. This is something that your implementation will have to solve.</p>
+</div>
+<div id="access-level-anonrestrredirect" class="section level2" number="1.3">
+<h2>
+<span class="header-section-number">1.3</span> Access level (anon/restr/redirect)<a class="anchor" aria-label="anchor" href="#access-level-anonrestrredirect"><i class="fas fa-link"></i></a>
+</h2>
+<p>Within each database server, there are multiple databases with different access levels and censoring requirements.</p>
+<p>Censoring is performed via the db schema.</p>
+<div id="anon" class="section level3" number="1.3.1">
+<h3>
+<span class="header-section-number">1.3.1</span> anon<a class="anchor" aria-label="anchor" href="#anon"><i class="fas fa-link"></i></a>
+</h3>
+<p>The “anonymous” database contains data that is anonymous. All team members should have access to this database.</p>
+</div>
+<div id="restr" class="section level3" number="1.3.2">
+<h3>
+<span class="header-section-number">1.3.2</span> restr<a class="anchor" aria-label="anchor" href="#restr"><i class="fas fa-link"></i></a>
+</h3>
+<p>The “restricted” database contains data that is:</p>
+<ul>
+<li>Indirectly identifiable</li>
+<li>Anonymous</li>
+</ul>
+<p>Only a restricted number of team members should have access to this database.</p>
+</div>
+<div id="redirect" class="section level3" number="1.3.3">
+<h3>
+<span class="header-section-number">1.3.3</span> redirect<a class="anchor" aria-label="anchor" href="#redirect"><i class="fas fa-link"></i></a>
+</h3>
+<p>This is not technically a database, however, it is treated as one.</p>
+<p>If a person creates a db schema that exists in both the anonymous and restricted databases, then Sykdomspulsen Core will automatically detect the highest level of access and connect to that database when working with redirect schemas.</p>
+<div class="inline-figure"><img src="rmd/db-schemas/db_redirect.png" width="100%"></div>
+</div>
+</div>
+<div id="creating-your-own" class="section level2" number="1.4">
+<h2>
+<span class="header-section-number">1.4</span> Creating your own<a class="anchor" aria-label="anchor" href="#creating-your-own"><i class="fas fa-link"></i></a>
+</h2>
+<p>Sykdomspulsen Core requires a lot of boilerplate code. It is strongly recommended that you use the RStudio <code>Addins</code> menu to help you quickly insert code templates.</p>
+<div class="inline-figure"><img src="rmd/db-schemas/addins.png" width="100%"></div>
+<p>We will generate three database schemas:</p>
+<ul>
+<li>restr_example (specified via <code>name_access</code>)</li>
+<li>anon_example (specified via <code>name_access</code>)</li>
+<li>redirect_example (automatically created when both <code>restr</code> and <code>anon</code> are used)</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_schema_v8.html">add_schema_v8</a></span><span class="op">(</span>
+  name_access <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"restr"</span>, <span class="st">"anon"</span><span class="op">)</span>,
+  name_grouping <span class="op">=</span> <span class="st">"example"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  db_configs <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">db_configs</span>,
+  field_types <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="st">"granularity_time"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"granularity_geo"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"country_iso3"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"location_code"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"border"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"age"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"sex"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    
+    <span class="st">"date"</span> <span class="op">=</span> <span class="st">"DATE"</span>,
+    
+    <span class="st">"isoyear"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"isoweek"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"isoyearweek"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"season"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"seasonweek"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>,
+    
+    <span class="st">"calyear"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"calmonth"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"calyearmonth"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+
+    <span class="st">"value_n"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>
+  <span class="op">)</span>,
+  keys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="st">"granularity_time"</span>,
+    <span class="st">"location_code"</span>,
+    <span class="st">"date"</span>,
+    <span class="st">"age"</span>,
+    <span class="st">"sex"</span>
+  <span class="op">)</span>,
+  censors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    restr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      value_n <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/censor_function_factory_nothing.html">censor_function_factory_nothing</a></span><span class="op">(</span><span class="st">"value_n"</span><span class="op">)</span>
+    <span class="op">)</span>,
+    anon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      value_n <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/censor_function_factory_values_0_4.html">censor_function_factory_values_0_4</a></span><span class="op">(</span><span class="st">"value_n"</span><span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">)</span>,
+  validator_field_types <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/validator_field_types_sykdomspulsen.html">validator_field_types_sykdomspulsen</a></span>,
+  validator_field_contents <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/validator_field_contents_sykdomspulsen.html">validator_field_contents_sykdomspulsen</a></span>,
+  info <span class="op">=</span> <span class="st">"This db table is used for..."</span>
+<span class="op">)</span></code></pre></div>
+<p>This <code>schema</code> has a few main parts.</p>
+<div id="naming" class="section level3" number="1.4.1">
+<h3>
+<span class="header-section-number">1.4.1</span> Naming<a class="anchor" aria-label="anchor" href="#naming"><i class="fas fa-link"></i></a>
+</h3>
+<p>The db schemas and tables will be given the names: <code>name_access_name_grouping_name_variant</code></p>
+<p>In this example, there will be three db schemas:</p>
+<ul>
+<li>restr_example (accessible at <code>sc::config$schemas$restr_example</code>)</li>
+<li>anon_example (accessible at <code>sc::config$schemas$anon_example</code>)</li>
+<li>redirect_example (accessible at <code>sc::config$schemas$redirect_example</code>)</li>
+</ul>
+<p>Corresponding to two db tables:</p>
+<ul>
+<li>restr_example</li>
+<li>anon_example</li>
+</ul>
+<div id="name_access" class="section level4" number="1.4.1.1">
+<h4>
+<span class="header-section-number">1.4.1.1</span> name_access<a class="anchor" aria-label="anchor" href="#name_access"><i class="fas fa-link"></i></a>
+</h4>
+<p>Either <code>restr</code> or <code>anon</code></p>
+</div>
+<div id="name_grouping" class="section level4" number="1.4.1.2">
+<h4>
+<span class="header-section-number">1.4.1.2</span> name_grouping<a class="anchor" aria-label="anchor" href="#name_grouping"><i class="fas fa-link"></i></a>
+</h4>
+<p>A descriptive name</p>
+</div>
+<div id="name_variant" class="section level4" number="1.4.1.3">
+<h4>
+<span class="header-section-number">1.4.1.3</span> name_variant<a class="anchor" aria-label="anchor" href="#name_variant"><i class="fas fa-link"></i></a>
+</h4>
+<p>A descriptive name</p>
+</div>
+</div>
+<div id="db_configs" class="section level3" number="1.4.2">
+<h3>
+<span class="header-section-number">1.4.2</span> db_configs<a class="anchor" aria-label="anchor" href="#db_configs"><i class="fas fa-link"></i></a>
+</h3>
+<p>A list that contains information about the database:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">db_configs</span><span class="op">)</span>
+<span class="co">## [1] "restr"         "anon"          "specific_daar" "config"</span></code></pre></div>
+</div>
+<div id="db_field_types" class="section level3" number="1.4.3">
+<h3>
+<span class="header-section-number">1.4.3</span> db_field_types<a class="anchor" aria-label="anchor" href="#db_field_types"><i class="fas fa-link"></i></a>
+</h3>
+<p>A vector containing the names and variable types of the columns of the database table.</p>
+<p>In the vast majority of cases, the first 16 columns are standardized and will always be the same.</p>
+<p>Permitted variable types are:</p>
+<ul>
+<li>TEXT</li>
+<li>DOUBLE</li>
+<li>INTEGER</li>
+<li>BOOLEAN</li>
+<li>DATE</li>
+<li>DATETIME</li>
+</ul>
+</div>
+<div id="keys" class="section level3" number="1.4.4">
+<h3>
+<span class="header-section-number">1.4.4</span> keys<a class="anchor" aria-label="anchor" href="#keys"><i class="fas fa-link"></i></a>
+</h3>
+<p>The columns that will form the primary key of the database table (i.e. identify unique rows).</p>
+</div>
+<div id="censors" class="section level3" number="1.4.5">
+<h3>
+<span class="header-section-number">1.4.5</span> censors<a class="anchor" aria-label="anchor" href="#censors"><i class="fas fa-link"></i></a>
+</h3>
+</div>
+<div id="validator_field_types" class="section level3" number="1.4.6">
+<h3>
+<span class="header-section-number">1.4.6</span> validator_field_types<a class="anchor" aria-label="anchor" href="#validator_field_types"><i class="fas fa-link"></i></a>
+</h3>
+<p>A validator that is useful for ensuring that your database table names are consistent with predetermined rules. For example, in Sykdomspulsen we have decided that we always want the first 16 columns to be:</p>
+<ul>
+<li>granularity_time</li>
+<li>granularity_geo</li>
+<li>country_iso3</li>
+<li>location_code</li>
+<li>border</li>
+<li>age</li>
+<li>sex</li>
+<li>date</li>
+<li>isoyear</li>
+<li>isoweek</li>
+<li>isoyearweek</li>
+<li>season</li>
+<li>seasonweek</li>
+<li>calyear</li>
+<li>calmonth</li>
+<li>calyearmonth</li>
+</ul>
+<p>While developing new code we found that it was difficult to force all developers to remember to include these 16 columns in the correct order. The validator <code><a href="https://rdrr.io/pkg/sc/man/validator_field_types_sykdomspulsen.html">sc::validator_field_types_sykdomspulsen</a></code> ensures that the first 16 columns are as expected, and otherwise the developer will not be able to run their code.</p>
+<p><code>validator_field_contents</code> is a validator that ensures that the contents of your data is correct. We experienced that there were issues with <code>granularity_time</code> sometimes containing the value <code>week</code> and sometimes containing the value <code>weekly</code>. To maintain consistency in our data, the validator <code><a href="https://rdrr.io/pkg/sc/man/validator_field_contents_sykdomspulsen.html">sc::validator_field_contents_sykdomspulsen</a></code> will throw an error if it observes non-accepted values for certain variables.</p>
+</div>
+</div>
+<div id="loading-data-into-a-db-schema" class="section level2" number="1.5">
+<h2>
+<span class="header-section-number">1.5</span> Loading data into a db schema<a class="anchor" aria-label="anchor" href="#loading-data-into-a-db-schema"><i class="fas fa-link"></i></a>
+</h2>
+<p>Checklist:</p>
+<ol style="list-style-type: decimal">
+<li>Remember that “keys” (as defined in sc::add_schema_v8) defines the uniquely identifying rows of data that are allowed in the db table</li>
+<li>Use <code>sc::fill_in_missing_v8(d)</code>
+</li>
+<li>Choose your method of loading the data (upsert/insert/drop_all_rows_and_then_upsert_data)</li>
+</ol>
+<p>We check to see what schemas are available:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">)</span>, <span class="st">"_example$"</span><span class="op">)</span>
+<span class="co">## [1] "restr_example"    "anon_example"     "redirect_example"</span></code></pre></div>
+<p>We then create a fictional dataset and work with it.</p>
+<aside>
+Remember that “keys” (as defined in <code><a href="https://rdrr.io/pkg/sc/man/add_schema_v8.html">sc::add_schema_v8</a></code>) defines the uniquely identifying rows of data that are allowed in the db table!
+</aside><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="co"># fictional dataset</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="op">(</span>
+  granularity_time <span class="op">=</span> <span class="st">"day"</span>,
+  granularity_geo <span class="op">=</span> <span class="st">"nation"</span>,
+  country_iso3 <span class="op">=</span> <span class="st">"nor"</span>,
+  location_code <span class="op">=</span> <span class="st">"norge"</span>,
+  border <span class="op">=</span> <span class="fl">2020</span>,
+  age <span class="op">=</span> <span class="st">"total"</span>,
+  sex <span class="op">=</span> <span class="st">"total"</span>,
+  
+  date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1990-01-07"</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"1990-01-08"</span><span class="op">)</span><span class="op">)</span>,
+  
+  isoyear <span class="op">=</span> <span class="fl">1990</span>,
+  isoweek <span class="op">=</span> <span class="fl">1</span>,
+  isoyearweek <span class="op">=</span> <span class="st">"1990-01"</span>,
+  season <span class="op">=</span> <span class="st">"1990/1991"</span>,
+  seasonweek <span class="op">=</span> <span class="fl">24</span>,
+  
+  calyear <span class="op">=</span> <span class="cn">NA</span>,
+  calmonth <span class="op">=</span> <span class="cn">NA</span>,
+  calyearmonth <span class="op">=</span> <span class="cn">NA</span>,
+  
+  value_n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">6</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># display the raw data</span>
+<span class="va">d</span><span class="op">[</span><span class="op">]</span>
+<span class="co">##    granularity_time granularity_geo country_iso3 location_code border   age   sex       date isoyear isoweek isoyearweek    season seasonweek calyear</span>
+<span class="co">## 1:              day          nation          nor         norge   2020 total total 1990-01-07    1990       1     1990-01 1990/1991         24      NA</span>
+<span class="co">## 2:              day          nation          nor         norge   2020 total total 1990-01-08    1990       1     1990-01 1990/1991         24      NA</span>
+<span class="co">##    calmonth calyearmonth value_n</span>
+<span class="co">## 1:       NA           NA       3</span>
+<span class="co">## 2:       NA           NA       6</span>
+
+<span class="co"># always fill in missing data!</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/fill_in_missing_v8.html">fill_in_missing_v8</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
+
+<span class="co"># we have four options to get the data into the db table</span>
+<span class="co"># remember that "keys" defines the uniquely identifying rows of data that are allowed in the db table!</span>
+<span class="co"># - upsert means "update if data exists, otherwise append"</span>
+<span class="co"># - insert means "append" (data cannot already exist)</span>
+
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">redirect_example</span><span class="op">$</span><span class="fu">upsert_data</span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
+<span class="co">## Creating table restr_example</span>
+<span class="co">## Creating table anon_example</span>
+<span class="co">#sc::config$schemas$redirect_example$insert_data(d)</span>
+<span class="co">#sc::config$schemas$redirect_example$drop_all_rows_and_then_upsert_data(d)</span>
+<span class="co">#sc::config$schemas$redirect_example$drop_all_rows_and_then_insert_data(d)</span></code></pre></div>
+</div>
+<div id="accessing-the-data-in-a-db-schema" class="section level2" number="1.6">
+<h2>
+<span class="header-section-number">1.6</span> Accessing the data in a db schema<a class="anchor" aria-label="anchor" href="#accessing-the-data-in-a-db-schema"><i class="fas fa-link"></i></a>
+</h2>
+<p>Checklist:</p>
+<ol style="list-style-type: decimal">
+<li><code><a href="https://rdrr.io/pkg/sc/man/mandatory_db_filter.html">sc::mandatory_db_filter</a></code></li>
+<li><code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select</a></code></li>
+</ol>
+<p>We extract data from db schemas using <a href="https://dplyr.tidyverse.org/">dplyr</a> with a <a href="https://dbplyr.tidyverse.org/">dbplyr backend</a>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">redirect_example</span><span class="op">$</span><span class="fu">tbl</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/mandatory_db_filter.html">mandatory_db_filter</a></span><span class="op">(</span>
+    granularity_time <span class="op">=</span> <span class="st">"day"</span>,
+    granularity_time_not <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo_not <span class="op">=</span> <span class="cn">NULL</span>,
+    country_iso3 <span class="op">=</span> <span class="cn">NULL</span>,
+    location_code <span class="op">=</span> <span class="st">"norge"</span>,
+    age <span class="op">=</span> <span class="st">"total"</span>,
+    age_not <span class="op">=</span> <span class="cn">NULL</span>,
+    sex <span class="op">=</span> <span class="st">"total"</span>,
+    sex_not <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="va">granularity_time</span>,
+    <span class="va">location_code</span>,
+    <span class="va">date</span>,
+    <span class="va">value_n</span>,
+    <span class="va">value_n_censored</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">##    granularity_time location_code       date value_n value_n_censored</span>
+<span class="co">## 1:              day         norge 1990-01-07       3            FALSE</span>
+<span class="co">## 2:              day         norge 1990-01-08       6            FALSE</span></code></pre></div>
+<p>We can observe the effects of censoring as defined in <code><a href="https://rdrr.io/pkg/sc/man/add_schema_v8.html">sc::add_schema_v8</a></code></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">restr_example</span><span class="op">$</span><span class="fu">tbl</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/mandatory_db_filter.html">mandatory_db_filter</a></span><span class="op">(</span>
+    granularity_time <span class="op">=</span> <span class="st">"day"</span>,
+    granularity_time_not <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo_not <span class="op">=</span> <span class="cn">NULL</span>,
+    country_iso3 <span class="op">=</span> <span class="cn">NULL</span>,
+    location_code <span class="op">=</span> <span class="st">"norge"</span>,
+    age <span class="op">=</span> <span class="st">"total"</span>,
+    age_not <span class="op">=</span> <span class="cn">NULL</span>,
+    sex <span class="op">=</span> <span class="st">"total"</span>,
+    sex_not <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="va">granularity_time</span>,
+    <span class="va">location_code</span>,
+    <span class="va">date</span>,
+    <span class="va">value_n</span>,
+    <span class="va">value_n_censored</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">##    granularity_time location_code       date value_n value_n_censored</span>
+<span class="co">## 1:              day         norge 1990-01-07       3            FALSE</span>
+<span class="co">## 2:              day         norge 1990-01-08       6            FALSE</span>
+
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">anon_example</span><span class="op">$</span><span class="fu">tbl</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/mandatory_db_filter.html">mandatory_db_filter</a></span><span class="op">(</span>
+    granularity_time <span class="op">=</span> <span class="st">"day"</span>,
+    granularity_time_not <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo_not <span class="op">=</span> <span class="cn">NULL</span>,
+    country_iso3 <span class="op">=</span> <span class="cn">NULL</span>,
+    location_code <span class="op">=</span> <span class="st">"norge"</span>,
+    age <span class="op">=</span> <span class="st">"total"</span>,
+    age_not <span class="op">=</span> <span class="cn">NULL</span>,
+    sex <span class="op">=</span> <span class="st">"total"</span>,
+    sex_not <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="va">granularity_time</span>,
+    <span class="va">location_code</span>,
+    <span class="va">date</span>,
+    <span class="va">value_n</span>,
+    <span class="va">value_n_censored</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">##    granularity_time location_code       date value_n value_n_censored</span>
+<span class="co">## 1:              day         norge 1990-01-07       0             TRUE</span>
+<span class="co">## 2:              day         norge 1990-01-08       6            FALSE</span></code></pre></div>
+</div>
+<div id="accessing-the-data-in-ad-hoc-analyses" class="section level2" number="1.7">
+<h2>
+<span class="header-section-number">1.7</span> Accessing the data in ad-hoc analyses<a class="anchor" aria-label="anchor" href="#accessing-the-data-in-ad-hoc-analyses"><i class="fas fa-link"></i></a>
+</h2>
+<p>When doing ad-hoc analyses, you may access the database tables via the helper function <code><a href="https://rdrr.io/pkg/sc/man/tbl.html">sc::tbl</a></code></p>
+<p><strong>IT IS STRICTLY FORBIDDEN TO USE THIS INSIDE SYKDOMSPULSEN TASKS!!!</strong></p>
+<p>This is because <code><a href="https://rdrr.io/pkg/sc/man/tbl.html">sc::tbl</a></code>:</p>
+<ul>
+<li>is NOT SAFE to use in parallel programming</li>
+<li>bypasses the input/output control mechanisms that we apply in <code>sc::task_from_config_v8</code>
+</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tbl.html">tbl</a></span><span class="op">(</span><span class="st">"restr_example"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/mandatory_db_filter.html">mandatory_db_filter</a></span><span class="op">(</span>
+    granularity_time <span class="op">=</span> <span class="st">"day"</span>,
+    granularity_time_not <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo <span class="op">=</span> <span class="cn">NULL</span>,
+    granularity_geo_not <span class="op">=</span> <span class="cn">NULL</span>,
+    country_iso3 <span class="op">=</span> <span class="cn">NULL</span>,
+    location_code <span class="op">=</span> <span class="st">"norge"</span>,
+    age <span class="op">=</span> <span class="st">"total"</span>,
+    age_not <span class="op">=</span> <span class="cn">NULL</span>,
+    sex <span class="op">=</span> <span class="st">"total"</span>,
+    sex_not <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="va">granularity_time</span>,
+    <span class="va">location_code</span>,
+    <span class="va">date</span>,
+    <span class="va">value_n</span>,
+    <span class="va">value_n_censored</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">##    granularity_time location_code       date value_n value_n_censored</span>
+<span class="co">## 1:              day         norge 1990-01-07       3            FALSE</span>
+<span class="co">## 2:              day         norge 1990-01-08       6            FALSE</span></code></pre></div>
+</div>
+<div id="exploring-data-in-schemas" class="section level2" number="1.8">
+<h2>
+<span class="header-section-number">1.8</span> Exploring data in schemas<a class="anchor" aria-label="anchor" href="#exploring-data-in-schemas"><i class="fas fa-link"></i></a>
+</h2>
+<p>DB Schemas obviously contain a lot of data. It can be very overwhelming to try and understand what is inside the schema.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+
+<span class="co"># Get the first few lines of the schema (use $tbl())</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">restr_example</span><span class="op">$</span><span class="fu">tbl</span><span class="op">(</span><span class="op">)</span>
+<span class="co">## # Source:   table&lt;restr_example&gt; [?? x 18]</span>
+<span class="co">## # Database: Microsoft SQL Server 12.00.6433[FHI\RIWH@OFY-GN-SQL01/sykdomspulsen_interactive_restr]</span>
+<span class="co">##   granularity_time granularity_geo country_iso3 location_code border age   sex   date       isoyear isoweek isoyearweek season    seasonweek calyear</span>
+<span class="co">##   &lt;chr&gt;            &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt;          &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;       &lt;int&gt;   &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;   &lt;int&gt;</span>
+<span class="co">## 1 day              nation          nor          norge           2020 total total 1990-01-07    1990       1 1990-01     1990/1991         24      NA</span>
+<span class="co">## 2 day              nation          nor          norge           2020 total total 1990-01-08    1990       1 1990-01     1990/1991         24      NA</span>
+<span class="co">## # … with 4 more variables: calmonth &lt;int&gt;, calyearmonth &lt;chr&gt;, value_n &lt;int&gt;, value_n_censored &lt;lgl&gt;</span>
+
+<span class="co"># Get a summary of the schema (referencing the schema directly)</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">restr_example</span>
+<span class="co">## [sykdomspulsen_interactive_restr].[dbo].[restr_example]   (connected)</span>
+<span class="co">## </span>
+<span class="co">## granularity_time (TEXT):</span>
+<span class="co">##  - day (n = 2)</span>
+<span class="co">## granularity_geo (TEXT):</span>
+<span class="co">##  - nation (n = 2)</span>
+<span class="co">## country_iso3 (TEXT):</span>
+<span class="co">##  - nor (n = 2)</span>
+<span class="co">## location_code (TEXT)</span>
+<span class="co">## border (INTEGER):</span>
+<span class="co">##  - 2020 (n = 2)</span>
+<span class="co">## age (TEXT):</span>
+<span class="co">##  - total (n = 2)</span>
+<span class="co">## sex (TEXT):</span>
+<span class="co">##  - total (n = 2)</span>
+<span class="co">## date (DATE)</span>
+<span class="co">## isoyear (INTEGER):</span>
+<span class="co">##  - 1990 (n = 2)</span>
+<span class="co">## isoweek (INTEGER)</span>
+<span class="co">## isoyearweek (TEXT)</span>
+<span class="co">## season (TEXT):</span>
+<span class="co">##  - 1990/1991 (n = 2)</span>
+<span class="co">## seasonweek (DOUBLE)</span>
+<span class="co">## calyear (INTEGER)</span>
+<span class="co">## calmonth (INTEGER)</span>
+<span class="co">## calyearmonth (TEXT)</span>
+<span class="co">## value_n (INTEGER)</span>
+<span class="co">## value_n_censored (BOOLEAN)</span>
+
+<span class="co"># Get a summary of a variable inside the schema via 'hashing the data structure'</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">restr_example</span> <span class="op">%&gt;%</span>
+  <span class="fu">spltidy</span><span class="fu">::</span><span class="fu"><a href="https://docs.sykdomspulsen.no/spltidy/reference/hash_data_structure.html">hash_data_structure</a></span><span class="op">(</span><span class="st">"value_n"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="100%"></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># This can also be done directly on a dbplyr table</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tbl.html">tbl</a></span><span class="op">(</span><span class="st">"restr_example"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">spltidy</span><span class="fu">::</span><span class="fu"><a href="https://docs.sykdomspulsen.no/spltidy/reference/hash_data_structure.html">hash_data_structure</a></span><span class="op">(</span><span class="st">"value_n"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="_main_files/figure-html/unnamed-chunk-12-2.png" width="100%"></div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="authors.html">Authors</a></div>
+<div class="next"><a href="tasks.html"><span class="header-section-number">2</span> Tasks</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#db-schemas"><span class="header-section-number">1</span> DB Schemas</a></li>
+<li><a class="nav-link" href="#introduction"><span class="header-section-number">1.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#database-servers"><span class="header-section-number">1.2</span> Database servers</a></li>
+<li>
+<a class="nav-link" href="#access-level-anonrestrredirect"><span class="header-section-number">1.3</span> Access level (anon/restr/redirect)</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#anon"><span class="header-section-number">1.3.1</span> anon</a></li>
+<li><a class="nav-link" href="#restr"><span class="header-section-number">1.3.2</span> restr</a></li>
+<li><a class="nav-link" href="#redirect"><span class="header-section-number">1.3.3</span> redirect</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#creating-your-own"><span class="header-section-number">1.4</span> Creating your own</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#naming"><span class="header-section-number">1.4.1</span> Naming</a></li>
+<li><a class="nav-link" href="#db_configs"><span class="header-section-number">1.4.2</span> db_configs</a></li>
+<li><a class="nav-link" href="#db_field_types"><span class="header-section-number">1.4.3</span> db_field_types</a></li>
+<li><a class="nav-link" href="#keys"><span class="header-section-number">1.4.4</span> keys</a></li>
+<li><a class="nav-link" href="#censors"><span class="header-section-number">1.4.5</span> censors</a></li>
+<li><a class="nav-link" href="#validator_field_types"><span class="header-section-number">1.4.6</span> validator_field_types</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#loading-data-into-a-db-schema"><span class="header-section-number">1.5</span> Loading data into a db schema</a></li>
+<li><a class="nav-link" href="#accessing-the-data-in-a-db-schema"><span class="header-section-number">1.6</span> Accessing the data in a db schema</a></li>
+<li><a class="nav-link" href="#accessing-the-data-in-ad-hoc-analyses"><span class="header-section-number">1.7</span> Accessing the data in ad-hoc analyses</a></li>
+<li><a class="nav-link" href="#exploring-data-in-schemas"><span class="header-section-number">1.8</span> Exploring data in schemas</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Sykdomspulsen Core in Depth</strong>" was written by members of the Sykdomspulsen Team. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>2 Tasks | Sykdomspulsen Core in Depth</title>
+<meta name="author" content="members of the Sykdomspulsen Team">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
+<meta property="og:title" content="2 Tasks | Sykdomspulsen Core in Depth">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2 Tasks | Sykdomspulsen Core in Depth">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><meta name="description" content="2.1 Introduction A task is the basic operational unit of Sykdomspulsen Core. It is based on plnr. In short, you can think of a Sykdomspulsen Core task as multiple plnr plans plus Sykdomspulsen...">
+<meta property="og:description" content="2.1 Introduction A task is the basic operational unit of Sykdomspulsen Core. It is based on plnr. In short, you can think of a Sykdomspulsen Core task as multiple plnr plans plus Sykdomspulsen...">
+<meta name="twitter:description" content="2.1 Introduction A task is the basic operational unit of Sykdomspulsen Core. It is based on plnr. In short, you can think of a Sykdomspulsen Core task as multiple plnr plans plus Sykdomspulsen...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="https://docs.sykdomspulsen.no" title="">docs.sykdomspulsen.no</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Sykdomspulsen Core in Depth</a></li>
+<li><a class="" href="authors.html">Authors</a></li>
+<li><a class="" href="db-schemas.html"><span class="header-section-number">1</span> DB Schemas</a></li>
+<li><a class="active" href="tasks.html"><span class="header-section-number">2</span> Tasks</a></li>
+<li><a class="" href="file-layout.html"><span class="header-section-number">3</span> File Layout</a></li>
+<li><a class="" href="tutorial-1-introduction.html"><span class="header-section-number">4</span> Tutorial 1: Introduction</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="tasks" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> Tasks<a class="anchor" aria-label="anchor" href="#tasks"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-1" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>A task is the basic operational unit of Sykdomspulsen Core. It is based on <a href="https://folkehelseinstituttet.github.io/plnr/">plnr</a>.</p>
+<p>In short, you can think of a Sykdomspulsen Core task as multiple <a href="https://folkehelseinstituttet.github.io/plnr/">plnr plans</a> plus <a href="analytics_db_schemas_introduction.html">Sykdomspulsen Core db schemas</a>.</p>
+</div>
+<div id="definitions" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> Definitions<a class="anchor" aria-label="anchor" href="#definitions"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-table"><table class="gmisc_table" style="border-collapse: collapse; width: 100%; border-collapse: separate;">
+<thead><tr>
+<th style="font-size: 16px; font-weight: bold; border-top: 2px solid grey; border-bottom: 1px solid grey; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+Object
+</th>
+<th style="font-size: 16px; font-weight: bold; border-top: 2px solid grey; border-bottom: 1px solid grey; border-right: 1px solid black; text-align: left;">
+Description
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+argset
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+A named list containing arguments.
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+plnr analysis
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+These are the fundamental units that are scheduled in plnr:
+<ul>
+<li>
+1 argset
+</li>
+<li>
+1 function that takes two (or more) arguments:
+<ul>
+<li>
+data (named list)
+</li>
+<li>
+argset (named list)
+</li>
+<li>
+… (optional arguments)
+</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+data_selector_fn
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+A function that takes two arguments:
+<ul>
+<li>
+argset (named list)
+</li>
+<li>
+schema (named list)
+</li>
+</ul>
+This function provides a named list to be used as the <code>data</code> argument to <code>action_fn</code>
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+action_fn
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+A function that takes three arguments:
+<ul>
+<li>
+data (named list, returned from data_selector_fn)
+</li>
+<li>
+argset (named list)
+</li>
+<li>
+schema (named list)
+</li>
+</ul>
+This is the thing that <strong>‘does stuff’</strong> in Sykdomspulsen Core.
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+sc analysis
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+A <code>sc analysis</code> is essentially a <code>plnr analysis</code> with database schemas:
+<ul>
+<li>
+1 argset
+</li>
+<li>
+1 action_fn
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+plan
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 1px dashed grey; width: 80%; border-right: 1px solid black; text-align: left;">
+<ul>
+<li>
+1 data-pull (using data_selector_fn)
+</li>
+<li>
+1 list of sc analyses
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 2px solid grey; width: 20%; border-left: 1px solid black; border-right: 1px solid black; text-align: left;">
+task
+</td>
+<td style="padding-left: .4em; padding-right: .2em; padding-top: .4em; padding-bottom: .4em; font-size: 14px; border-bottom: 2px solid grey; width: 80%; border-right: 1px solid black; text-align: left;">
+This is is the unit that Airflow schedules.
+<ul>
+<li>
+1 list of plans
+</li>
+</ul>
+We sometimes run the list of plans in parallel.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div id="general-tasks" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> General tasks<a class="anchor" aria-label="anchor" href="#general-tasks"><i class="fas fa-link"></i></a>
+</h2>
+<div class="figure">
+<span style="display:block;" id="fig:general-tasks"></span>
+<img src="rmd/tasks/task_general.png" alt="A general task showing the many options of a task." width="100%"><p class="caption">
+Figure 2.1: A general task showing the many options of a task.
+</p>
+</div>
+<p>Figure <a href="tasks.html#fig:general-tasks">2.1</a> shows us the full potential of a task.</p>
+<p>Data can be read from any sources, then within a plan the data will be extracted <strong>once</strong> by <code>data_selector_fn</code> (i.e. “one data-pull”). The data will then be provided to each analysis, which will run <code>action_fn</code> on:</p>
+<ul>
+<li>The provided data</li>
+<li>The provided argset</li>
+<li>The provided schemas</li>
+</ul>
+<p>The <code>action_fn</code> can then:</p>
+<ul>
+<li>Write data/results to db schemas</li>
+<li>Send emails</li>
+<li>Export graphs, excel files, reports, or other physical files</li>
+</ul>
+<p>Typically only a subset of this would be done in a single task.</p>
+<div id="plan-heavy-or-analysis-heavy-tasks" class="section level3" number="2.3.1">
+<h3>
+<span class="header-section-number">2.3.1</span> Plan-heavy or analysis-heavy tasks?<a class="anchor" aria-label="anchor" href="#plan-heavy-or-analysis-heavy-tasks"><i class="fas fa-link"></i></a>
+</h3>
+<p>A plan-heavy task is one that has many plans and a few analyses per plan.</p>
+<p>An analysis-heavy task is one that has few plans and many analyses per plan.</p>
+<p>In general, a data-pull is slow and wastes time. This means that it is preferable to reduce the number of data-pulls performed by having each data-pull extract larger quantities of data. The analysis can then subset the data as required (identifed via argsets). i.e. If possible, an analysis-heavy task is preferable because it will be faster (at the cost of needing more RAM).</p>
+<p>Obviously, if a plan’s data-pull is larger, it will use more RAM. If you need to conserve RAM, then you should use a plan-heavy approach.</p>
+<p>Figure <a href="tasks.html#fig:general-tasks">2.1</a> shows only 2 location based analyses, but in reality there are 356 municipalities in Norway in 2021. If figure <a href="tasks.html#fig:general-tasks">2.1</a> had 2 plans (1 for 2021 data, 1 for 2020 data) and 356 analyses for each plan (1 for each location_code) then we would be taking an analysis-heavy approach.</p>
+</div>
+</div>
+<div id="putting-it-together" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Putting it together<a class="anchor" aria-label="anchor" href="#putting-it-together"><i class="fas fa-link"></i></a>
+</h2>
+<div class="figure">
+<span style="display:block;" id="fig:file-locations"></span>
+<img src="rmd/tasks/file_locations.png" alt="A typical file setup for an implementation of Sykdomspulsen Core. $plan_argset_fn$ is rarely used, and is therefore shown as blacked out in the most of the tasks." width="100%"><p class="caption">
+Figure 2.2: A typical file setup for an implementation of Sykdomspulsen Core. <span class="math inline">\(plan_argset_fn\)</span> is rarely used, and is therefore shown as blacked out in the most of the tasks.
+</p>
+</div>
+<p>Figure <a href="tasks.html#fig:file-locations">2.2</a> shows a typical implementation of Sykdomspulsen Core.</p>
+<p><code>config_db.r</code> contains all of the <a href="analytics_db_schemas_introduction.html">Sykdomspulsen Core db schemas</a> definitions. i.e. A long list of <code><a href="https://rdrr.io/pkg/sc/man/add_schema_v8.html">sc::add_schema_v8</a></code> commands.</p>
+<p><code>config_tasks.r</code> contains all of the task definitions. i.e. A long list of <code><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">sc::add_task_from_config_v8</a></code> commands.</p>
+<p>Then we have a one file for each task that contains the <code>action_fn</code>, <code>data_selector_fn</code> and other functions that are relevant to the task at hand.</p>
+</div>
+<div id="weather-example" class="section level2" number="2.5">
+<h2>
+<span class="header-section-number">2.5</span> Weather example<a class="anchor" aria-label="anchor" href="#weather-example"><i class="fas fa-link"></i></a>
+</h2>
+<p>We will now go through an example of how a person would design and implement tasks relating to weather</p>
+<div id="db-schema" class="section level3" number="2.5.1">
+<h3>
+<span class="header-section-number">2.5.1</span> db schema<a class="anchor" aria-label="anchor" href="#db-schema"><i class="fas fa-link"></i></a>
+</h3>
+<p>As documented in more detail <a href="analytics_db_schemas_introduction.html">here</a>, we create a db schema that fits our needs (recording weather data).</p>
+<div class="inline-figure"><img src="rmd/tasks/addins_1.png" width="100%"></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_schema_v8.html">add_schema_v8</a></span><span class="op">(</span>
+  name_access <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"anon"</span><span class="op">)</span>,
+  name_grouping <span class="op">=</span> <span class="st">"example_weather"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  db_configs <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">db_configs</span>,
+  field_types <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="st">"granularity_time"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"granularity_geo"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"country_iso3"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"location_code"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"border"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"age"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"sex"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    
+    <span class="st">"date"</span> <span class="op">=</span> <span class="st">"DATE"</span>,
+    
+    <span class="st">"isoyear"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"isoweek"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"isoyearweek"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"season"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+    <span class="st">"seasonweek"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>,
+    
+    <span class="st">"calyear"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"calmonth"</span> <span class="op">=</span> <span class="st">"INTEGER"</span>,
+    <span class="st">"calyearmonth"</span> <span class="op">=</span> <span class="st">"TEXT"</span>,
+
+    <span class="st">"tg"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>,
+    <span class="st">"tx"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>,
+    <span class="st">"tn"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>,
+    <span class="st">"rr"</span> <span class="op">=</span> <span class="st">"DOUBLE"</span>
+  <span class="op">)</span>,
+  keys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+    <span class="st">"granularity_time"</span>,
+    <span class="st">"location_code"</span>,
+    <span class="st">"date"</span>,
+    <span class="st">"age"</span>,
+    <span class="st">"sex"</span>
+  <span class="op">)</span>,
+  censors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    anon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      
+    <span class="op">)</span>
+  <span class="op">)</span>,
+  validator_field_types <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/validator_field_types_sykdomspulsen.html">validator_field_types_sykdomspulsen</a></span>,
+  validator_field_contents <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/validator_field_contents_sykdomspulsen.html">validator_field_contents_sykdomspulsen</a></span>,
+  info <span class="op">=</span> <span class="st">"This db table is used for..."</span>
+<span class="op">)</span></code></pre></div>
+</div>
+<div id="task_from_config_v8" class="section level3" number="2.5.2">
+<h3>
+<span class="header-section-number">2.5.2</span> task_from_config_v8<a class="anchor" aria-label="anchor" href="#task_from_config_v8"><i class="fas fa-link"></i></a>
+</h3>
+<p>To “register” our task, we use the RStudio addin <code>task_from_config</code>.</p>
+<div class="inline-figure"><img src="rmd/tasks/addins_2.png" width="100%"></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># tm_run_task("example_weather_import_data_from_api")</span>
+<span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">add_task_from_config_v8</a></span><span class="op">(</span>
+  name_grouping <span class="op">=</span> <span class="st">"example_weather"</span>,
+  name_action <span class="op">=</span> <span class="st">"import_data_from_api"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  plan_analysis_fn_name <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># "PACKAGE::TASK_NAME_plan_analysis"</span>
+  for_each_plan <span class="op">=</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+    location_code <span class="op">=</span> <span class="st">"county03"</span> <span class="co"># fhidata::norway_locations_names()[granularity_geo %in% c("county")]$location_code</span>
+  <span class="op">)</span>,
+  for_each_analysis <span class="op">=</span> <span class="cn">NULL</span>,
+  universal_argset <span class="op">=</span> <span class="cn">NULL</span>,
+  upsert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  insert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  action_fn_name <span class="op">=</span> <span class="st">"example_weather_import_data_from_api_action"</span>,
+  data_selector_fn_name <span class="op">=</span> <span class="st">"example_weather_import_data_from_api_data_selector"</span>,
+  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="co"># input</span>
+
+    <span class="co"># output</span>
+    <span class="st">"anon_example_weather"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">anon_example_weather</span>
+  <span class="op">)</span>,
+  info <span class="op">=</span> <span class="st">"This task does..."</span>
+<span class="op">)</span></code></pre></div>
+<p>There are a number of important things in this code that need highlighting.</p>
+<div id="for_each_plan" class="section level4" number="2.5.2.1">
+<h4>
+<span class="header-section-number">2.5.2.1</span> for_each_plan<a class="anchor" aria-label="anchor" href="#for_each_plan"><i class="fas fa-link"></i></a>
+</h4>
+<p><code>for_each_plan</code> expects a list. Each component of the list will correspond to a plan, with the values added to the argset of all the analyses inside the plan.</p>
+<p>For example, the following code would give 4 plans, with 1 analysis per each plan, with each analysis containing <code>argset$var_1</code> and <code>argset$var_2</code> as appropriate.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">for_each_plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">for_each_plan</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  var_1 <span class="op">=</span> <span class="fl">1</span>,
+  var_2 <span class="op">=</span> <span class="st">"a"</span>
+<span class="op">)</span>
+<span class="va">for_each_plan</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  var_1 <span class="op">=</span> <span class="fl">2</span>,
+  var_2 <span class="op">=</span> <span class="st">"b"</span>
+<span class="op">)</span>
+<span class="va">for_each_plan</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  var_1 <span class="op">=</span> <span class="fl">1</span>,
+  var_2 <span class="op">=</span> <span class="st">"a"</span>
+<span class="op">)</span>
+<span class="va">for_each_plan</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  var_1 <span class="op">=</span> <span class="fl">2</span>,
+  var_2 <span class="op">=</span> <span class="st">"b"</span>
+<span class="op">)</span></code></pre></div>
+<p>You <strong>always</strong> need at least 1 plan. The most simple plan possible is:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fl">1</span>
+<span class="op">)</span>
+<span class="co">## [[1]]</span>
+<span class="co">## [[1]]$x</span>
+<span class="co">## [1] 1</span></code></pre></div>
+</div>
+<div id="plnrexpand_list" class="section level4" number="2.5.2.2">
+<h4>
+<span class="header-section-number">2.5.2.2</span> plnr::expand_list<a class="anchor" aria-label="anchor" href="#plnrexpand_list"><i class="fas fa-link"></i></a>
+</h4>
+<p><code><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">plnr::expand_list</a></code> is esentially the same as <code>expand.grid</code>, except that its return values are lists instead of data.frame.</p>
+<p>The code above could be simplified as follows.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">for_each_plan</span> <span class="op">&lt;-</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+  var_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,
+  var_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">for_each_plan</span>
+<span class="co">## [[1]]</span>
+<span class="co">## [[1]]$var_1</span>
+<span class="co">## [1] 1</span>
+<span class="co">## </span>
+<span class="co">## [[1]]$var_2</span>
+<span class="co">## [1] "a"</span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">## [[2]]</span>
+<span class="co">## [[2]]$var_1</span>
+<span class="co">## [1] 2</span>
+<span class="co">## </span>
+<span class="co">## [[2]]$var_2</span>
+<span class="co">## [1] "a"</span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">## [[3]]</span>
+<span class="co">## [[3]]$var_1</span>
+<span class="co">## [1] 1</span>
+<span class="co">## </span>
+<span class="co">## [[3]]$var_2</span>
+<span class="co">## [1] "b"</span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">## [[4]]</span>
+<span class="co">## [[4]]$var_1</span>
+<span class="co">## [1] 2</span>
+<span class="co">## </span>
+<span class="co">## [[4]]$var_2</span>
+<span class="co">## [1] "b"</span></code></pre></div>
+</div>
+<div id="for_each_analysis" class="section level4" number="2.5.2.3">
+<h4>
+<span class="header-section-number">2.5.2.3</span> for_each_analysis<a class="anchor" aria-label="anchor" href="#for_each_analysis"><i class="fas fa-link"></i></a>
+</h4>
+<p><code>for_each_plan</code> expects a list, which will generate <code>length(for_each_plan)</code> plans.</p>
+<p><code>for_each_analysis</code> is the same, except it will generate <strong>analyses</strong> within each of the plans.</p>
+</div>
+<div id="universal_argset" class="section level4" number="2.5.2.4">
+<h4>
+<span class="header-section-number">2.5.2.4</span> universal_argset<a class="anchor" aria-label="anchor" href="#universal_argset"><i class="fas fa-link"></i></a>
+</h4>
+<p>A named list that will add the values to the argset of all the analyses.</p>
+</div>
+<div id="upsert_at_end_of_each_plan" class="section level4" number="2.5.2.5">
+<h4>
+<span class="header-section-number">2.5.2.5</span> upsert_at_end_of_each_plan<a class="anchor" aria-label="anchor" href="#upsert_at_end_of_each_plan"><i class="fas fa-link"></i></a>
+</h4>
+<p>If <code>TRUE</code> and <code>schema</code> contains a schema called <code>output</code>, then the returned values of <code>action_fn</code> will be stored and upserted to <code>schema$output</code> at the end of each <strong>plan</strong>.</p>
+<p>If you choose to upsert/insert manually from within <code>action_fn</code>, you can only do so at the end of each <strong>analysis</strong>.</p>
+</div>
+<div id="insert_at_end_of_each_plan" class="section level4" number="2.5.2.6">
+<h4>
+<span class="header-section-number">2.5.2.6</span> insert_at_end_of_each_plan<a class="anchor" aria-label="anchor" href="#insert_at_end_of_each_plan"><i class="fas fa-link"></i></a>
+</h4>
+<p>If <code>TRUE</code> and <code>schema</code> contains a schema called <code>output</code>, then the returned values of <code>action_fn</code> will be stored and inserted to <code>schema$output</code> at the end of each <strong>plan</strong>.</p>
+<p>If you choose to upsert/insert manually from within <code>action_fn</code>, you can only do so at the end of each <strong>analysis</strong>.</p>
+</div>
+<div id="action_fn_name" class="section level4" number="2.5.2.7">
+<h4>
+<span class="header-section-number">2.5.2.7</span> action_fn_name<a class="anchor" aria-label="anchor" href="#action_fn_name"><i class="fas fa-link"></i></a>
+</h4>
+<p>A character string of the action_fn, preferably including the package name.</p>
+</div>
+<div id="data_selector_fn_name" class="section level4" number="2.5.2.8">
+<h4>
+<span class="header-section-number">2.5.2.8</span> data_selector_fn_name<a class="anchor" aria-label="anchor" href="#data_selector_fn_name"><i class="fas fa-link"></i></a>
+</h4>
+<p>A character string of the data_selector_fn, preferably including the package name.</p>
+</div>
+<div id="schema" class="section level4" number="2.5.2.9">
+<h4>
+<span class="header-section-number">2.5.2.9</span> schema<a class="anchor" aria-label="anchor" href="#schema"><i class="fas fa-link"></i></a>
+</h4>
+<p>A named list containing the schemas used in this task.</p>
+</div>
+</div>
+<div id="data_selector_fn" class="section level3" number="2.5.3">
+<h3>
+<span class="header-section-number">2.5.3</span> data_selector_fn<a class="anchor" aria-label="anchor" href="#data_selector_fn"><i class="fas fa-link"></i></a>
+</h3>
+<p>Use the addins dropdown to easily add in boilerplate code.</p>
+<div class="inline-figure"><img src="rmd/tasks/addins_3.png" width="100%"></div>
+<p>The <code>data_selector_fn</code> is used to extract the data for each plan.</p>
+<p>The lines inside <code>if(plnr::is_run_directly()){</code> are used to help developers. You can run the code manually/interactively to “load” the values of <code>argset</code> and <code>schema</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">index_plan</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+
+<span class="va">argset</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_argset.html">tm_get_argset</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span><span class="op">)</span>
+<span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_schema.html">tm_get_schema</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">argset</span><span class="op">)</span>
+<span class="co">## $`**universal**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $`**plan**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $location_code</span>
+<span class="co">## [1] "county03"</span>
+<span class="co">## </span>
+<span class="co">## $`**analysis**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $`**automatic**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $index</span>
+<span class="co">## [1] 1</span>
+<span class="co">## </span>
+<span class="co">## $today</span>
+<span class="co">## [1] "2022-03-01"</span>
+<span class="co">## </span>
+<span class="co">## $yesterday</span>
+<span class="co">## [1] "2022-02-28"</span>
+<span class="co">## </span>
+<span class="co">## $first_analysis</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $first_argset</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $last_analysis</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $last_argset</span>
+<span class="co">## [1] TRUE</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span><span class="op">)</span>
+<span class="co">## [1] "anon_example_weather"</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># **** data_selector **** ----</span>
+<span class="co">#' example_weather_import_data_from_api (data selector)</span>
+<span class="co">#' @param argset Argset</span>
+<span class="co">#' @param schema DB Schema</span>
+<span class="co">#' @export</span>
+<span class="va">example_weather_import_data_from_api_data_selector</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">argset</span>, <span class="va">schema</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/is_run_directly.html">is_run_directly</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="co"># sc::tm_get_plans_argsets_as_dt("example_weather_import_data_from_api")</span>
+
+    <span class="va">index_plan</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+
+    <span class="va">argset</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_argset.html">tm_get_argset</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span><span class="op">)</span>
+    <span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_schema.html">tm_get_schema</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="co"># find the mid lat/long for the specified location_code</span>
+  <span class="va">gps</span> <span class="op">&lt;-</span> <span class="fu">fhimaps</span><span class="fu">::</span><span class="va"><a href="https://folkehelseinstituttet.github.io/fhimaps/reference/norway_nuts3_map_b2020_default_dt.html">norway_nuts3_map_b2020_default_dt</a></span><span class="op">[</span><span class="va">location_code</span> <span class="op">==</span> <span class="va">argset</span><span class="op">$</span><span class="va">location_code</span>,<span class="fu">.</span><span class="op">(</span>
+    lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span>,
+    long <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">long</span><span class="op">)</span>
+  <span class="op">)</span><span class="op">]</span>
+  
+  <span class="co"># download the forecast for the specified location_code</span>
+  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/GET.html">GET</a></span><span class="op">(</span><span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"https://api.met.no/weatherapi/locationforecast/2.0/classic?lat={gps$lat}&amp;lon={gps$long}"</span><span class="op">)</span>, <span class="fu">httr</span><span class="fu">::</span><span class="fu"><a href="https://httr.r-lib.org/reference/content_type.html">content_type_xml</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_xml</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">content</span><span class="op">)</span>
+
+  <span class="co"># The variable returned must be a named list</span>
+  <span class="va">retval</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="st">"data"</span> <span class="op">=</span> <span class="va">d</span>
+  <span class="op">)</span>
+  <span class="va">retval</span>
+<span class="op">}</span></code></pre></div>
+</div>
+</div>
+<div id="action_fn" class="section level2" number="2.6">
+<h2>
+<span class="header-section-number">2.6</span> action_fn<a class="anchor" aria-label="anchor" href="#action_fn"><i class="fas fa-link"></i></a>
+</h2>
+<p>The lines inside <code>if(plnr::is_run_directly()){</code> are used to help developers. You can run the code manually/interactively to “load” the values of <code>argset</code> and <code>schema</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">index_plan</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">index_analysis</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_data.html">tm_get_data</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span><span class="op">)</span>
+<span class="va">argset</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_argset.html">tm_get_argset</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span>, index_analysis <span class="op">=</span> <span class="va">index_analysis</span><span class="op">)</span>
+<span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_schema.html">tm_get_schema</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+<span class="co">## $data</span>
+<span class="co">## {xml_document}</span>
+<span class="co">## &lt;weatherdata noNamespaceSchemaLocation="https://schema.api.met.no/schemas/weatherapi-0.4.xsd" created="2022-03-01T10:49:16Z" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;</span>
+<span class="co">## [1] &lt;meta&gt;\n  &lt;model name="met_public_forecast" termin="2022-03-01T10:00:00Z" runended="2022-03-01T10:10:35Z" nextrun="2022-03-01T11:10:35Z" from=" ...</span>
+<span class="co">## [2] &lt;product class="pointData"&gt;\n  &lt;time datatype="forecast" from="2022-03-01T10:00:00Z" to="2022-03-01T10:00:00Z"&gt;\n    &lt;location altitude="252" l ...</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">argset</span><span class="op">)</span>
+<span class="co">## $`**universal**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $`**plan**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $location_code</span>
+<span class="co">## [1] "county03"</span>
+<span class="co">## </span>
+<span class="co">## $`**analysis**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $`**automatic**`</span>
+<span class="co">## [1] "*"</span>
+<span class="co">## </span>
+<span class="co">## $index</span>
+<span class="co">## [1] 1</span>
+<span class="co">## </span>
+<span class="co">## $today</span>
+<span class="co">## [1] "2022-03-01"</span>
+<span class="co">## </span>
+<span class="co">## $yesterday</span>
+<span class="co">## [1] "2022-02-28"</span>
+<span class="co">## </span>
+<span class="co">## $first_analysis</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $first_argset</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $last_analysis</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $last_argset</span>
+<span class="co">## [1] TRUE</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">schema</span><span class="op">)</span><span class="op">)</span>
+<span class="co">## [1] "anon_example_weather"</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># **** action **** ----</span>
+<span class="co">#' example_weather_import_data_from_api (action)</span>
+<span class="co">#' @param data Data</span>
+<span class="co">#' @param argset Argset</span>
+<span class="co">#' @param schema DB Schema</span>
+<span class="co">#' @export</span>
+<span class="va">example_weather_import_data_from_api_action</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">argset</span>, <span class="va">schema</span><span class="op">)</span> <span class="op">{</span>
+  <span class="co"># tm_run_task("example_weather_import_data_from_api")</span>
+
+  <span class="kw">if</span><span class="op">(</span><span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/is_run_directly.html">is_run_directly</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="co"># sc::tm_get_plans_argsets_as_dt("example_weather_import_data_from_api")</span>
+
+    <span class="va">index_plan</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+    <span class="va">index_analysis</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+
+    <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_data.html">tm_get_data</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span><span class="op">)</span>
+    <span class="va">argset</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_argset.html">tm_get_argset</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span>, index_plan <span class="op">=</span> <span class="va">index_plan</span>, index_analysis <span class="op">=</span> <span class="va">index_analysis</span><span class="op">)</span>
+    <span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/tm_get_schema.html">tm_get_schema</a></span><span class="op">(</span><span class="st">"example_weather_import_data_from_api"</span><span class="op">)</span>
+  <span class="op">}</span>
+
+  <span class="co"># code goes here</span>
+  <span class="co"># special case that runs before everything</span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">argset</span><span class="op">$</span><span class="va">first_analysis</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">{</span>
+
+  <span class="op">}</span>
+  
+  <span class="va">a</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">data</span>
+  
+  <span class="va">baz</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_find_all.html">xml_find_all</a></span><span class="op">(</span><span class="va">a</span>, <span class="st">".//maxTemperature"</span><span class="op">)</span>
+  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">vector</a></span><span class="op">(</span><span class="st">"list"</span>, length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span>
+  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">parent</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_parent</a></span><span class="op">(</span><span class="va">baz</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+    <span class="va">grandparent</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_parent</a></span><span class="op">(</span><span class="va">parent</span><span class="op">)</span>
+    <span class="va">time_from</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_attr.html">xml_attr</a></span><span class="op">(</span><span class="va">grandparent</span>, <span class="st">"from"</span><span class="op">)</span>
+    <span class="va">time_to</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_attr.html">xml_attr</a></span><span class="op">(</span><span class="va">grandparent</span>, <span class="st">"to"</span><span class="op">)</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_find_all.html">xml_find_all</a></span><span class="op">(</span><span class="va">parent</span>, <span class="st">".//minTemperature"</span><span class="op">)</span>
+    <span class="va">temp_min</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_attr.html">xml_attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"value"</span><span class="op">)</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_find_all.html">xml_find_all</a></span><span class="op">(</span><span class="va">parent</span>, <span class="st">".//maxTemperature"</span><span class="op">)</span>
+    <span class="va">temp_max</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_attr.html">xml_attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"value"</span><span class="op">)</span>
+    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_find_all.html">xml_find_all</a></span><span class="op">(</span><span class="va">parent</span>, <span class="st">".//precipitation"</span><span class="op">)</span>
+    <span class="va">precip</span> <span class="op">&lt;-</span> <span class="fu">xml2</span><span class="fu">::</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_attr.html">xml_attr</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"value"</span><span class="op">)</span>
+    <span class="va">res</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>
+      time_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">time_from</span><span class="op">)</span>,
+      time_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">time_to</span><span class="op">)</span>,
+      tx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">temp_max</span><span class="op">)</span>,
+      tn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">temp_min</span><span class="op">)</span>,
+      rr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">precip</span><span class="op">)</span>
+    <span class="op">)</span>
+  <span class="op">}</span>
+  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+  <span class="va">res</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">time_from</span>, <span class="fl">12</span>, <span class="fl">13</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"00"</span>, <span class="st">"06"</span>, <span class="st">"12"</span>, <span class="st">"18"</span><span class="op">)</span><span class="op">]</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">date</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">time_from</span>, <span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">N</span> <span class="op">:=</span> <span class="va">.N</span>, by <span class="op">=</span> <span class="va">date</span><span class="op">]</span>
+  <span class="va">res</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span><span class="va">N</span> <span class="op">==</span> <span class="fl">4</span><span class="op">]</span>
+  <span class="va">res</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>
+    , 
+    <span class="fu">.</span><span class="op">(</span>
+      tg <span class="op">=</span> <span class="cn">NA</span>,
+      tx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">tx</span><span class="op">)</span>,
+      tn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">tn</span><span class="op">)</span>,
+      rr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">rr</span><span class="op">)</span>
+    <span class="op">)</span>,
+    keyby <span class="op">=</span> <span class="fu">.</span><span class="op">(</span><span class="va">date</span><span class="op">)</span>
+  <span class="op">]</span>
+  
+  <span class="co"># we look at the downloaded data</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"Data after downloading"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+  
+  <span class="co"># we now need to format it</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">granularity_time</span> <span class="op">:=</span> <span class="st">"day"</span><span class="op">]</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">sex</span> <span class="op">:=</span> <span class="st">"total"</span><span class="op">]</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">age</span> <span class="op">:=</span> <span class="st">"total"</span><span class="op">]</span>
+  <span class="va">res</span><span class="op">[</span>, <span class="va">location_code</span> <span class="op">:=</span> <span class="va">argset</span><span class="op">$</span><span class="va">location_code</span><span class="op">]</span>
+  
+  <span class="co"># fill in missing structural variables</span>
+  <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/fill_in_missing_v8.html">fill_in_missing_v8</a></span><span class="op">(</span><span class="va">res</span>, border <span class="op">=</span> <span class="fl">2020</span><span class="op">)</span>
+  
+  <span class="co"># we look at the downloaded data</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"Data after missing structural variables filled in"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+
+  <span class="co"># put data in db table</span>
+  <span class="co"># schema$SCHEMA_NAME$insert_data(d)</span>
+  <span class="va">schema</span><span class="op">$</span><span class="va">anon_example_weather</span><span class="op">$</span><span class="fu">upsert_data</span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+  <span class="co"># schema$SCHEMA_NAME$drop_all_rows_and_then_upsert_data(d)</span>
+
+  <span class="co"># special case that runs after everything</span>
+  <span class="co"># copy to anon_web?</span>
+  <span class="kw">if</span><span class="op">(</span><span class="va">argset</span><span class="op">$</span><span class="va">last_analysis</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">{</span>
+    <span class="co"># sc::copy_into_new_table_where(</span>
+    <span class="co">#   table_from = "anon_X",</span>
+    <span class="co">#   table_to = "anon_webkht"</span>
+    <span class="co"># )</span>
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
+</div>
+<div id="run-the-task" class="section level2" number="2.7">
+<h2>
+<span class="header-section-number">2.7</span> Run the task<a class="anchor" aria-label="anchor" href="#run-the-task"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tasks.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_run_task</span>(<span class="st">"example_weather_import_data_from_api"</span>)</span>
+<span id="cb19-2"><a href="tasks.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## task: example_weather_import_data_from_api</span></span>
+<span id="cb19-3"><a href="tasks.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Running task=example_weather_import_data_from_api with plans=1 and analyses=1</span></span>
+<span id="cb19-4"><a href="tasks.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="do">## plans=sequential, argset=sequential with cores=1</span></span>
+<span id="cb19-5"><a href="tasks.html#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-6"><a href="tasks.html#cb19-6" aria-hidden="true" tabindex="-1"></a>[<span class="sc">----------------------------------------------------------------------------------------------------------------</span>] <span class="dv">0</span><span class="sc">/</span><span class="dv">1</span> (  <span class="dv">0</span>%) <span class="cf">in</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>, eta<span class="sc">:</span>  ?s</span>
+<span id="cb19-7"><a href="tasks.html#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-8"><a href="tasks.html#cb19-8" aria-hidden="true" tabindex="-1"></a>[<span class="sc">==</span><span class="er">==============================================================================================================</span>] <span class="dv">1</span><span class="sc">/</span><span class="dv">1</span> (<span class="dv">100</span>%) <span class="cf">in</span> <span class="dv">00</span><span class="sc">:</span><span class="dv">00</span><span class="sc">:</span><span class="dv">00</span>, eta<span class="sc">:</span>  0s</span>
+<span id="cb19-9"><a href="tasks.html#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "Data after downloading"</span></span>
+<span id="cb19-10"><a href="tasks.html#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="do">##          date tg  tx   tn rr</span></span>
+<span id="cb19-11"><a href="tasks.html#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1: 2022-03-02 NA 6.2 -3.0  0</span></span>
+<span id="cb19-12"><a href="tasks.html#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2: 2022-03-03 NA 5.6 -2.3  0</span></span>
+<span id="cb19-13"><a href="tasks.html#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 3: 2022-03-04 NA 4.7 -3.3  0</span></span>
+<span id="cb19-14"><a href="tasks.html#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 4: 2022-03-05 NA 4.1 -1.9  0</span></span>
+<span id="cb19-15"><a href="tasks.html#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 5: 2022-03-06 NA 5.8 -2.9  0</span></span>
+<span id="cb19-16"><a href="tasks.html#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 6: 2022-03-07 NA 5.0 -2.6  0</span></span>
+<span id="cb19-17"><a href="tasks.html#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 7: 2022-03-08 NA 4.4 -1.1  0</span></span>
+<span id="cb19-18"><a href="tasks.html#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 8: 2022-03-09 NA 3.2 -1.4  0</span></span>
+<span id="cb19-19"><a href="tasks.html#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "Data after missing structural variables filled in"</span></span>
+<span id="cb19-20"><a href="tasks.html#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="do">##          date tg  tx   tn rr granularity_time   sex   age location_code granularity_geo border isoyearweek    season isoyear isoweek seasonweek</span></span>
+<span id="cb19-21"><a href="tasks.html#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 1: 2022-03-02 NA 6.2 -3.0  0              day total total      county03          county   2020     2022-09 2021/2022    2022       9         32</span></span>
+<span id="cb19-22"><a href="tasks.html#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 2: 2022-03-03 NA 5.6 -2.3  0              day total total      county03          county   2020     2022-09 2021/2022    2022       9         32</span></span>
+<span id="cb19-23"><a href="tasks.html#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 3: 2022-03-04 NA 4.7 -3.3  0              day total total      county03          county   2020     2022-09 2021/2022    2022       9         32</span></span>
+<span id="cb19-24"><a href="tasks.html#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 4: 2022-03-05 NA 4.1 -1.9  0              day total total      county03          county   2020     2022-09 2021/2022    2022       9         32</span></span>
+<span id="cb19-25"><a href="tasks.html#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="do">## 5: 2022-03-06 NA 5.8 -2.9  0              day total total      county03          county   2020     2022-09 2021/2022    2022       9         32</span></span>
+<span id="cb19-26"><a href="tasks.html#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="do">## 6: 2022-03-07 NA 5.0 -2.6  0              day total total      county03          county   2020     2022-10 2021/2022    2022      10         33</span></span>
+<span id="cb19-27"><a href="tasks.html#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 7: 2022-03-08 NA 4.4 -1.1  0              day total total      county03          county   2020     2022-10 2021/2022    2022      10         33</span></span>
+<span id="cb19-28"><a href="tasks.html#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="do">## 8: 2022-03-09 NA 3.2 -1.4  0              day total total      county03          county   2020     2022-10 2021/2022    2022      10         33</span></span>
+<span id="cb19-29"><a href="tasks.html#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="do">##    calyear calmonth calyearmonth country_iso3</span></span>
+<span id="cb19-30"><a href="tasks.html#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 1:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-31"><a href="tasks.html#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="do">## 2:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-32"><a href="tasks.html#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 3:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-33"><a href="tasks.html#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="do">## 4:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-34"><a href="tasks.html#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="do">## 5:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-35"><a href="tasks.html#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 6:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-36"><a href="tasks.html#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="do">## 7:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-37"><a href="tasks.html#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 8:    2022        3     2022-M03          nor</span></span>
+<span id="cb19-38"><a href="tasks.html#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Task ran in 0 mins</span></span></code></pre></div>
+</div>
+<div id="examples-of-different-types-of-tasks" class="section level2" number="2.8">
+<h2>
+<span class="header-section-number">2.8</span> Examples of different types of tasks<a class="anchor" aria-label="anchor" href="#examples-of-different-types-of-tasks"><i class="fas fa-link"></i></a>
+</h2>
+<div id="importing-data" class="section level3" number="2.8.1">
+<h3>
+<span class="header-section-number">2.8.1</span> Importing data<a class="anchor" aria-label="anchor" href="#importing-data"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-figure"><img src="rmd/tasks/task_import_data.png" width="100%"></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">add_task_from_config_v8</a></span><span class="op">(</span>
+  name_grouping <span class="op">=</span> <span class="st">"example"</span>,
+  name_action <span class="op">=</span> <span class="st">"import_data"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  plan_analysis_fn_name <span class="op">=</span> <span class="cn">NULL</span>,
+  for_each_plan <span class="op">=</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="fl">1</span>
+  <span class="op">)</span>,
+  for_each_analysis <span class="op">=</span> <span class="cn">NULL</span>,
+  universal_argset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    folder <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/path.html">path</a></span><span class="op">(</span><span class="st">"input"</span>, <span class="st">"example"</span><span class="op">)</span>
+  <span class="op">)</span>,
+  upsert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  insert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  action_fn_name <span class="op">=</span> <span class="st">"example_import_data_action"</span>,
+  data_selector_fn_name <span class="op">=</span> <span class="st">"example_import_data_data_selector"</span>,
+  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="co"># input</span>
+
+    <span class="co"># output</span>
+    <span class="st">"output"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">output</span>
+  <span class="op">)</span>,
+  info <span class="op">=</span> <span class="st">"This task does..."</span>
+<span class="op">)</span></code></pre></div>
+</div>
+<div id="analysis" class="section level3" number="2.8.2">
+<h3>
+<span class="header-section-number">2.8.2</span> Analysis<a class="anchor" aria-label="anchor" href="#analysis"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-figure"><img src="rmd/tasks/task_analysis.png" width="100%"></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">add_task_from_config_v8</a></span><span class="op">(</span>
+  name_grouping <span class="op">=</span> <span class="st">"example"</span>,
+  name_action <span class="op">=</span> <span class="st">"analysis"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  plan_analysis_fn_name <span class="op">=</span> <span class="cn">NULL</span>, 
+  for_each_plan <span class="op">=</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+    location_code <span class="op">=</span> <span class="fu">fhidata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fhidata/man/norway_locations_names.html">norway_locations_names</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="va">granularity_geo</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"county"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">location_code</span>
+  <span class="op">)</span>,
+  for_each_analysis <span class="op">=</span> <span class="cn">NULL</span>,
+  universal_argset <span class="op">=</span> <span class="cn">NULL</span>,
+  upsert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  insert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  action_fn_name <span class="op">=</span> <span class="st">"example_analysis_action"</span>,
+  data_selector_fn_name <span class="op">=</span> <span class="st">"example_analysis_data_selector"</span>,
+  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="co"># input</span>
+    <span class="st">"input"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">input</span>,
+
+    <span class="co"># output</span>
+    <span class="st">"output"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">output</span>
+  <span class="op">)</span>,
+  info <span class="op">=</span> <span class="st">"This task does..."</span>
+<span class="op">)</span></code></pre></div>
+</div>
+<div id="exporting-multiple-sets-of-results" class="section level3" number="2.8.3">
+<h3>
+<span class="header-section-number">2.8.3</span> Exporting multiple sets of results<a class="anchor" aria-label="anchor" href="#exporting-multiple-sets-of-results"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-figure"><img src="rmd/tasks/task_export_multiple.png" width="100%"></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">add_task_from_config_v8</a></span><span class="op">(</span>
+  name_grouping <span class="op">=</span> <span class="st">"example"</span>,
+  name_action <span class="op">=</span> <span class="st">"export_results"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  plan_analysis_fn_name <span class="op">=</span> <span class="cn">NULL</span>, 
+  for_each_plan <span class="op">=</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+    location_code <span class="op">=</span> <span class="fu">fhidata</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fhidata/man/norway_locations_names.html">norway_locations_names</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="va">granularity_geo</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"county"</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">location_code</span>
+  <span class="op">)</span>,
+  for_each_analysis <span class="op">=</span> <span class="cn">NULL</span>,
+  universal_argset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    folder <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/path.html">path</a></span><span class="op">(</span><span class="st">"output"</span>, <span class="st">"example"</span><span class="op">)</span>
+  <span class="op">)</span>,
+  upsert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  insert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  action_fn_name <span class="op">=</span> <span class="st">"example_export_results_action"</span>,
+  data_selector_fn_name <span class="op">=</span> <span class="st">"example_export_results_data_selector"</span>,
+  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="co"># input</span>
+    <span class="st">"input"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">input</span>
+
+    <span class="co"># output</span>
+  <span class="op">)</span>,
+  info <span class="op">=</span> <span class="st">"This task does..."</span>
+<span class="op">)</span></code></pre></div>
+</div>
+<div id="exporting-combined-results" class="section level3" number="2.8.4">
+<h3>
+<span class="header-section-number">2.8.4</span> Exporting combined results<a class="anchor" aria-label="anchor" href="#exporting-combined-results"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-figure"><img src="rmd/tasks/task_export_combined.png" width="100%"></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/add_task_from_config_v8.html">add_task_from_config_v8</a></span><span class="op">(</span>
+  name_grouping <span class="op">=</span> <span class="st">"example"</span>,
+  name_action <span class="op">=</span> <span class="st">"export_results"</span>,
+  name_variant <span class="op">=</span> <span class="cn">NULL</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  plan_analysis_fn_name <span class="op">=</span> <span class="cn">NULL</span>, 
+  for_each_plan <span class="op">=</span> <span class="fu">plnr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plnr/man/expand_list.html">expand_list</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="fl">1</span>
+  <span class="op">)</span>,
+  for_each_analysis <span class="op">=</span> <span class="cn">NULL</span>,
+  universal_argset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    folder <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sc/man/path.html">path</a></span><span class="op">(</span><span class="st">"output"</span>, <span class="st">"example"</span><span class="op">)</span>,
+    granularity_geos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nation"</span>, <span class="st">"county"</span><span class="op">)</span>
+  <span class="op">)</span>,
+  upsert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  insert_at_end_of_each_plan <span class="op">=</span> <span class="cn">FALSE</span>,
+  action_fn_name <span class="op">=</span> <span class="st">"example_export_results_action"</span>,
+  data_selector_fn_name <span class="op">=</span> <span class="st">"example_export_results_data_selector"</span>,
+  schema <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="co"># input</span>
+    <span class="st">"input"</span> <span class="op">=</span> <span class="fu">sc</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sc/man/config.html">config</a></span><span class="op">$</span><span class="va">schemas</span><span class="op">$</span><span class="va">input</span>
+
+    <span class="co"># output</span>
+  <span class="op">)</span>,
+  info <span class="op">=</span> <span class="st">"This task does..."</span>
+<span class="op">)</span></code></pre></div>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="db-schemas.html"><span class="header-section-number">1</span> DB Schemas</a></div>
+<div class="next"><a href="file-layout.html"><span class="header-section-number">3</span> File Layout</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#tasks"><span class="header-section-number">2</span> Tasks</a></li>
+<li><a class="nav-link" href="#introduction-1"><span class="header-section-number">2.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#definitions"><span class="header-section-number">2.2</span> Definitions</a></li>
+<li>
+<a class="nav-link" href="#general-tasks"><span class="header-section-number">2.3</span> General tasks</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#plan-heavy-or-analysis-heavy-tasks"><span class="header-section-number">2.3.1</span> Plan-heavy or analysis-heavy tasks?</a></li></ul>
+</li>
+<li><a class="nav-link" href="#putting-it-together"><span class="header-section-number">2.4</span> Putting it together</a></li>
+<li>
+<a class="nav-link" href="#weather-example"><span class="header-section-number">2.5</span> Weather example</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#db-schema"><span class="header-section-number">2.5.1</span> db schema</a></li>
+<li><a class="nav-link" href="#task_from_config_v8"><span class="header-section-number">2.5.2</span> task_from_config_v8</a></li>
+<li><a class="nav-link" href="#data_selector_fn"><span class="header-section-number">2.5.3</span> data_selector_fn</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#action_fn"><span class="header-section-number">2.6</span> action_fn</a></li>
+<li><a class="nav-link" href="#run-the-task"><span class="header-section-number">2.7</span> Run the task</a></li>
+<li>
+<a class="nav-link" href="#examples-of-different-types-of-tasks"><span class="header-section-number">2.8</span> Examples of different types of tasks</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#importing-data"><span class="header-section-number">2.8.1</span> Importing data</a></li>
+<li><a class="nav-link" href="#analysis"><span class="header-section-number">2.8.2</span> Analysis</a></li>
+<li><a class="nav-link" href="#exporting-multiple-sets-of-results"><span class="header-section-number">2.8.3</span> Exporting multiple sets of results</a></li>
+<li><a class="nav-link" href="#exporting-combined-results"><span class="header-section-number">2.8.4</span> Exporting combined results</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Sykdomspulsen Core in Depth</strong>" was written by members of the Sykdomspulsen Team. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
