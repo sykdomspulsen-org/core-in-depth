@@ -1,10 +1,5 @@
----
-title:  "Tutorial 1: Introduction"
-urlcolor: blue 
 
----
-
-<!-- # Tutorial 1: Introduction -->
+# Tutorial 1: Introduction
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE, warning=FALSE)
@@ -17,6 +12,13 @@ library(magrittr)
 library(sc)
 
 library(scexample)
+
+
+if(dir.exists("rmd")){
+  base_folder = "rmd/"
+}else{
+  base_folder = ""
+}
 ```
 
 ## Setup
@@ -84,7 +86,7 @@ All the schemas are spesified in `03_db_schemas.r`, all the task definitions are
 
 ## Developing weather_download_and_import_rawdata
 
-We will walk you through the development of a task that downloads weather data from an API and imports the raw data into a database table.
+We will walk you through the development of a task that downloads weather data from an API and imports the raw data into a database table. Any task consists of one or more schemas, a task description, a data selector function and an action function.
 
 ### 1. Schemas
 
@@ -93,8 +95,7 @@ The first step when developing any task is specifying the schemas that will be u
 It is strongly recommended that you use the RStudio `Addins` menu to help you quickly insert code templates.
 
 ```{r, out.width = "100%", echo = FALSE}
-#knitr::include_graphics("rmd/db-schemas/addins.png")
-knitr::include_graphics("db-schemas/addins.png")
+knitr::include_graphics(paste0(base_folder, "db-schemas/addins.png"))
 ```
 
 If you go into the script `03_db_schemas.r` you can see a function called `set_db_schemas`. All schemas are placed within this function. If you scroll down you can see that there is already a schema called `anon_example_weather_rawdata` which is commented out and looks like this: 
@@ -242,8 +243,7 @@ Again it is strongly recommended that you use the RStudio `Addins` menu to help 
 Go to script `04_tasks.r` and place your curser inside of the curly bracket. Use the addins menu and click `Insert task_from_config`.
 
 ```{r, out.width = "100%", echo = FALSE}
-#knitr::include_graphics("rmd/tasks/addins_2.png")
-knitr::include_graphics("tasks/addins_2.png")
+knitr::include_graphics(paste0(base_folder, "tasks/addins_2.png"))
 ```
 
 This results in the following boiler plate for a task definition:
@@ -340,7 +340,7 @@ for_each_plan = plnr::expand_list(
 for_each_plan
 ```
 
-`fhidata::norway_locations_names()` gives us location codes in Norway (try and run if in your console). Implement a plan in your task which has the location codes off all municipalities (municip) in Norway. 
+`fhidata::norway_locations_names()` gives us location codes in Norway (try and run if in your console). Implement a plan in your task which has the location codes off all municipalities (municip) in Norway. `plnr` is a package made for this purpose and stands for planner. The function `expnad_list()` makes a list of all possible combinations of the arguments passed to the function. 
 
 
 ### Universal argset
@@ -417,8 +417,7 @@ Go to script `weather_download_and_import_rawdata.r`.
 Use the RStudio `Addins` menu to help you quickly insert code templates by clicking `Insert action and data selector`.
 
 ```{r, out.width = "100%", echo = FALSE}
-#knitr::include_graphics("rmd/tasks/addins_3.png")
-knitr::include_graphics("tasks/addins_3.png")
+knitr::include_graphics(paste0(base_folder, "tasks/addins_3.png"))
 ```
 
 
@@ -501,7 +500,7 @@ What do you actually want to *do* with them? Find the action part in your script
 
 ```{r, echo=FALSE}
 options(width = 150)
-print(x, lines = 95:102, include_url = TRUE)
+print(x, lines = 10:19, include_url = TRUE)
 ```
 
 At the top of all `action_fn`s you will again see a section of code wrapped inside `if (plnr::is_run_directly()) {`. This works exactly the same as for the data_selector_fn. 
@@ -568,7 +567,7 @@ If you want to deleate the data use `schema$NAME_DATABASE$drop_all_rows()` in ou
 
 ```{r, echo=FALSE}
 options(width = 150)
-print(x, lines = 21:24, include_url = TRUE)
+print(x, lines = 83:85, include_url = TRUE)
 ```
 
 This code is only run if it is the last analysis. It is typically used to copy an internal database table (i.e. one that the public is not directly viewing) to an external database (i.e. one that the public is directly viewing).  
@@ -605,14 +604,14 @@ Run the entire task by running `tm_run_task("weather_download_and_import_rawdata
 
 The previous task (weather_download_and_import_rawdata) focused on downloading raw data from an API and inserting it into a database table.
 
-The task weather_clean_data focuses on cleaning the raw data and inserting it in another database table. That is, the data source is a Sykdomspulsen Core database table, and the output is also a Sykdomspulsen Core database table.
+The task weather_clean_data cleans the raw data and inserts it into another database table. That is, the data source is a Sykdomspulsen Core database table, and the output is also a Sykdomspulsen Core database table.
 
 We will walk you through the development of weather_clean_data, however, the description of this task will be less comprehensive than the previous task, and will focus primarily on parts that are novel.
 
-We already mentioned that weather_clean_data cleans the raw data. We want this task to take the raw data we obtained in the previous task and aggregate it to obtain weather data on different geographical regions than municipalities. To do so we use some pre-made FHI functions such as `fhidata::make_skeleton` which makes a data table skeleton for the regions of interest and `fhidata::norway_locations_hierarchy` which converts location codes from one location code level to another. 
+We already mentioned that weather_clean_data cleans the raw data. We want this task to take the raw data we obtained in the previous task and aggregate it to obtain weather data on different geographical regions than municipalities. To do so we use some pre-made FHI functions such as `fhidata::make_skeleton` which makes a data table skeleton for the regions of interest and `fhidata::norway_locations_hierarchy` which converts location codes from one location code level to another. You can read more about `fhidata::make_skeleton` through this link [make_skeleton](https://folkehelseinstituttet.github.io/fhidata/articles/Skeletons.html)
 
 ### 1. Schemas
-First we start by creating a schema for the data we want this task to store. The structure is exactly the same as for the previous task with name access anon and temp_max, temp_min and precip as additional colums. Try and create this schema in `03_db_schemas.r`.
+First we start by creating a schema for the data we want this task to store. The structure is exactly the same as for the previous task with name access anon and temp_max, temp_min and precip as additional colums. Try and create this schema in `03_db_schemas.r`. You can peak below if you do not recall how we did it. 
 
 ```{r, echo=FALSE}
 options(width = 150)
@@ -622,7 +621,7 @@ print(x, lines = 66:113, include_url = TRUE)
 
 ### 2. Task definition (task_from_config)
 
-The next step is to define the task in `04_tasks.r` . For this task the aim is to aggregate data to higher levels meaning we need all data available at the same time and we preform the entire task in one analysis. Hence we need a task with only one plan (x = 1). We need the data from the database created in the previous task as input schema and the schema we just implemented as output schema. Try and create this task definition! (Remember to use the addins menu to get a boiler plate task definition.)
+The next step is to define the task in `04_tasks.r`. For this task the aim is to aggregate data to higher levels meaning we need all data available at the same time and we preform the entire task in one analysis. Hence we need a task with only one plan (x = 1). We need the data from the database created in the previous task as input schema and the schema we just implemented as output schema. Try and create this task definition! (Remember to use the addins menu to get a boiler plate task definition.)
 
 
 #### Plan/analysis structure
@@ -639,12 +638,13 @@ If we were only aggregating municipality data to the county level, we could have
 
 #### Schemas
 
+We need to specify the schemas that are used for both input and output.
 ```{r, echo=FALSE}
 options(width = 150)
 print(x, lines = 62:68, include_url = TRUE)
 ```
 
-We need to specify the schemas that are used for both input and output.
+
 
 #### Full task description
 
@@ -856,6 +856,7 @@ This means we need 11 plans, one for each county. We use input data generated by
 
 ```{r, echo=FALSE}
 options(width = 150)
+x <- fhiplot::as_github_code("https://github.com/sykdomspulsen-org/sc-tutorial-end/blob/main/R/04_tasks.r")
 print(x, lines = 84:88, include_url = TRUE)
 ```
 
@@ -875,20 +876,21 @@ Try putting everything you have learned so fare together and create this task by
 
 ### 1. Schemas
 
+The schema has already been created by the previous task `weather_clean_data`.
+
 ```{r, echo=FALSE}
 options(width = 150)
 x <- fhiplot::as_github_code("https://raw.githubusercontent.com/sykdomspulsen-org/sc-tutorial-end/main/R/03_db_schemas.r")
 print(x, lines = 66:112, include_url = TRUE)
 ```
 
-This schema has already been created by the previous task `weather_clean_data`.
 
 ### 2. Task definition (task_from_config)
 
 ```{r, echo=FALSE}
 options(width = 150)
 x <- fhiplot::as_github_code("https://github.com/sykdomspulsen-org/sc-tutorial-end/blob/main/R/04_tasks.r")
-print(x, lines = 72:100, include_url = TRUE)
+print(x, lines = 73:100, include_url = TRUE)
 ```
 
 #### Plan/analysis structure
