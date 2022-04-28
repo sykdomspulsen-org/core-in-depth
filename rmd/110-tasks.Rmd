@@ -326,11 +326,15 @@ A named list that will add the values to the argset of all the analyses.
 
 If `TRUE` and `schema` contains a schema called `output`, then the returned values of `action_fn` will be stored and upserted to `schema$output` at the end of each **plan**.
 
+If `TRUE` and the returned values of `action_fn` are named lists, then the values within the named lists will be stored and upserted to `schema$NAME_FROM_LIST` at the end of each **plan**.
+
 If you choose to upsert/insert manually from within `action_fn`, you can only do so at the end of each **analysis**.
 
 #### insert_at_end_of_each_plan
 
 If `TRUE` and `schema` contains a schema called `output`, then the returned values of `action_fn` will be stored and inserted to `schema$output` at the end of each **plan**.
+
+If `TRUE` and the returned values of `action_fn` are named lists, then the values within the named lists will be stored and inserted to `schema$NAME_FROM_LIST` at the end of each **plan**.
 
 If you choose to upsert/insert manually from within `action_fn`, you can only do so at the end of each **analysis**.
 
